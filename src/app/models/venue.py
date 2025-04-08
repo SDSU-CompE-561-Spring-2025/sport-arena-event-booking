@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, Float
-from app.database import Base
+from app.core.database import Base
 
 class Venue(Base):
     __tablename__ = "venues"
