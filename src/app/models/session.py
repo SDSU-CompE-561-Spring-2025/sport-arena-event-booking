@@ -3,7 +3,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 class Session(Base):
-    _tablename_ = "sessions"
+    __tablename__ = "sessions"
 
     id = Column(Integer, primary_key=True, index=True)
     session_token = Column(String(255), unique=True, nullable=False)
