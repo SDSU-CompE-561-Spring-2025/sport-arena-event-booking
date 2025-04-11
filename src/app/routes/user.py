@@ -28,15 +28,15 @@ def get_my_profile(current_user: User = Depends(get_current_user)):
 def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
     return get_user_by_id_service(user_id, db)
 
-@router.post("/users/login", response_model=Token)
+@router.post("/login", response_model=Token)
 def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     return login_user_service(form_data, db)
 
-@router.put("/users/update/{user_id}", response_model=UserResponse)
+@router.put("/update/{user_id}", response_model=UserResponse)
 def update_user(user_id: int, update_data: UserUpdate, db: Session = Depends(get_db)):
     return update_user_service(user_id, update_data, db)
 
-@router.delete("/users/delete/{user_id}")
+@router.delete("/delete/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     return delete_user_service(user_id, db)
 
@@ -52,6 +52,6 @@ def create_user_by_admin(
 ):
     return register_user_service(user, db)
 
-@router.post("/users/logout")
+@router.post("/logout")
 def logout_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     return logout_user_service(token, db)
