@@ -1,34 +1,57 @@
-from fastAPI import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
+from app.core.auth import create_access_token, pwd_context, get_password_hash
+from app.dependencies import get_db
+from app.models.user import User
+from app.schemas.user import UserCreate, UserResponse, UserUpdate
+from datetime import timedelta
+from app.core.config import settings
+from app.core.auth import get_current_user, require_admin, oauth2_scheme
+from app.services.user import register_user_service, login_user_service, update_user_service,delete_user_service, get_profile_service,get_user_by_id_service, list_users_service,logout_user_service
+from app.schemas.token import Token
+from app.core.auth import get_current_user
+from typing import List
+
+
 router = APIRouter()
 
-@router.post("/register")
-async def register_user():
-    return {"message": "User registered successfully"}
+@router.post("/register", response_model=UserResponse)
+def register_user(user: UserCreate, db: Session = Depends(get_db)):
+    return register_user_service(user, db)
 
-@router.get("/user")
-async def get_user():
-    return {"message": "User details retrieved successfully"}
+@router.get("/me", response_model=UserResponse)
+def get_my_profile(current_user: User = Depends(get_current_user)):
+    return get_profile_service(current_user)
 
-@router.get("/user/{user_id}")
-async def get_user_by_id(user_id: int):
-    return {"message": f"User details for user {user_id} retrieved successfully"}
+@router.get("/user/{user_id}", response_model=UserResponse)
+def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    return get_user_by_id_service(user_id, db)
 
-@router.post("users/create")
-async def create_user():
-    return {"message": "User created successfully"}
+@router.post("/login", response_model=Token)
+def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    return login_user_service(form_data, db)
 
-@router.post("users/login")
-async def login_user():
-    return {"message": "User logged in successfully"}
+@router.put("/update/{user_id}", response_model=UserResponse)
+def update_user(user_id: int, update_data: UserUpdate, db: Session = Depends(get_db)):
+    return update_user_service(user_id, update_data, db)
 
-@router.put("users/update/{user_id}")
-async def update_user(user_id: int):
-    return {"message": f"User {user_id} updated successfully"}
+@router.delete("/delete/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    return delete_user_service(user_id, db)
 
-@router.delete("users/delete/{user_id}")
-async def delete_user(user_id: int):
-    return {"message": f"User {user_id} deleted successfully"}
+@router.get("/users", response_model=List[UserResponse])
+def list_users(db: Session = Depends(get_db)):
+    return list_users_service(db)
 
-@router.post("users/logout")
-async def logout_user():
-    return {"message": "User logged out successfully"}
+@router.post("/users/create", response_model=UserResponse)
+def create_user_by_admin(
+    user: UserCreate,
+    db: Session = Depends(get_db),
+    current_admin: User = Depends(require_admin)  # 👈 only Main Admin can access
+):
+    return register_user_service(user, db)
+
+@router.post("/logout")
+def logout_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    return logout_user_service(token, db)
