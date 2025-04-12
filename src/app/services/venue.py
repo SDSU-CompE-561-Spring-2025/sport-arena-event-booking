@@ -1,0 +1,51 @@
+from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from app.models.venue import Venue
+from app.models.venue_hours import VenueHours
+from app.schemas.venue import VenueCreate, VenueResponse, VenueUpdate
+from app.schemas.venue_hours import VenueHoursCreate, VenueHoursResponse
+from typing import List, Optional
+
+def get_venues_service(db: Session) -> List[Venue]:
+    venues = db.query(Venue).filter(Venue.deleted == False).all()
+    return venues
+
+def get_venue_hours_service(db: Session) -> List[VenueHours]:
+    venue_hours = db.query(VenueHours).filter(VenueHours.deleted == False).all()
+    return venue_hours
+
+def create_venue_service(venue: VenueCreate, db: Session) -> Venue:
+    new_venue = Venue(
+        name=venue.name,
+        description=venue.description,
+        location=venue.location,
+        capacity=venue.capacity,
+        contact_info=venue.contact_info,
+        venue_hours=venue.venue_hours
+    )
+    db.add(new_venue)
+    db.commit()
+    db.refresh(new_venue)
+    return new_venue
+
+def update_venue_service(venue_id: int, update_data: VenueUpdate, db: Session) -> Venue:
+    venue = db.query(Venue).filter(Venue.id == venue_id, Venue.deleted == False).first()
+    if not venue:
+        raise HTTPException(status_code=404, detail="Venue not found")
+
+    for key, value in update_data.dict(exclude_unset=True).items():
+        setattr(venue, key, value)
+
+    db.commit()
+    db.refresh(venue)
+    return venue
+
+def delete_venue_service(venue_id: int, db: Session):
+    venue = db.query(Venue).filter(Venue.id == venue_id, Venue.deleted == False).first()
+    if not venue:
+        raise HTTPException(status_code=404, detail="Venue not found")
+
+    venue.deleted = True
+    db.commit()
+    return {"message": "Venue deleted successfully"}
+

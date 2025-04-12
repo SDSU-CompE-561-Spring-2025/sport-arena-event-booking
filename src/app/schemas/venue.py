@@ -22,3 +22,13 @@ class VenueResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class VenueUpdate(BaseModel):
+    name: Optional[str] = None
+    location: Optional[str] = None
+    event_type: Optional[str] = None
+    availability: Optional[bool] = None
+    hourly_rate: Optional[float] = None
+
+    class Config:
+        orm_mode = True
