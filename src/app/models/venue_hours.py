@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import JSON
 from app.core.database import Base
 
 class VenueHours(Base):
-    _tablename_ = "venue_hours"
+    __tablename__ = "venue_hours"
 
     id = Column(Integer, primary_key=True, index=True)
     venue_id = Column(Integer, ForeignKey("venues.id"), nullable=False)
