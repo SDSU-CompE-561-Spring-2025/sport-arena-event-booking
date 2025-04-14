@@ -10,16 +10,28 @@ def get_venues_service(db: Session) -> List[Venue]:
     venues = db.query(Venue).filter(Venue.deleted == False).all()
     return venues
 
-def get_venue_hours_service(db: Session) -> List[VenueHours]:
-    venue_hours = db.query(VenueHours).filter(VenueHours.deleted == False).all()
+def get_venue_hours_by_venue_id_service(venue_id: int, db: Session) -> List[VenueHours]:
+    venue_hours = db.query(VenueHours).filter(
+        VenueHours.venue_id == venue_id,
+        VenueHours.deleted == False
+    ).all()
+
+    if not venue_hours:
+        raise HTTPException(status_code=404, detail="No hours found for this venue")
+
     return venue_hours
+
 
 def create_venue_service(venue: VenueCreate, db: Session) -> Venue:
     new_venue = Venue(
         name=venue.name,
-        description=venue.description,
+        venue_id=venue.venue_id,
         location=venue.location,
         capacity=venue.capacity,
+        event_type=venue.event_type,
+        image=venue.image,
+        availability=venue.availability,
+        hourly_rate=venue.hourly_rate,
         contact_info=venue.contact_info,
         venue_hours=venue.venue_hours
     )
@@ -47,5 +59,6 @@ def delete_venue_service(venue_id: int, db: Session):
 
     venue.deleted = True
     db.commit()
-    return {"message": "Venue deleted successfully"}
+    db.refresh(venue)
+    return venue
 

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.dependencies import get_db
+from app.services.venue import *
 from app.models.venue import Venue
 from app.schemas.venue import VenueCreate, VenueUpdate, VenueResponse
 from app.models.venue_hours import VenueHours
@@ -14,9 +15,9 @@ router = APIRouter()
 def get_venues(db: Session = Depends(get_db)):
     return get_venues_service(db)
 
-@router.get("/venue_hours", response_model=List[VenueHoursResponse])
-def get_venue_hours():
-    return get_venue_hours_service()
+@router.get("/venue_hours/{venue_id}", response_model=List[VenueHoursResponse])
+def get_venue_hours(venue_id: int, db: Session = Depends(get_db)):
+    return get_venue_hours_by_venue_id_service(venue_id, db)
 
 @router.post("/create", response_model=VenueResponse)
 def create_venue(venue: VenueCreate, db: Session = Depends(get_db)):
@@ -31,7 +32,7 @@ def update_venue(venue_id: int, update_data: VenueUpdate, db: Session = Depends(
 
 @router.delete("/delete/{venue_id}", response_model=VenueResponse)
 def delete_venue(venue_id: int, db: Session = Depends(get_db)):
-    success = delete_venue_service(venue_id, db)
-    if not success:
+    venue = delete_venue_service(venue_id, db)
+    if not venue:
         raise HTTPException(status_code=404, detail="Venue not found")
     return {"detail": "Venue deleted successfully"}

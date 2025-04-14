@@ -10,6 +10,8 @@ class VenueCreate(BaseModel):
     image: Optional[str] = None
     availability: Optional[bool] = True
     hourly_rate: float
+    contact_info: Optional[str] = None
+    venue_hours: Optional[str] = None
 
 class VenueResponse(BaseModel):
     id: int
