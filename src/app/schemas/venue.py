@@ -1,5 +1,11 @@
 from pydantic import BaseModel
-from typing import Optional
+from datetime import time
+from typing import Optional, List
+
+class EmbeddedVenueHours(BaseModel):
+    open_time: time
+    close_time: time
+    blackout_days: Optional[str] = None
 
 class VenueCreate(BaseModel):
     name: str
@@ -10,6 +16,8 @@ class VenueCreate(BaseModel):
     image: Optional[str] = None
     availability: Optional[bool] = True
     hourly_rate: float
+    contact_info: Optional[str] = None
+    venue_hours: Optional[List[EmbeddedVenueHours]] = None
 
 class VenueResponse(BaseModel):
     id: int
@@ -23,12 +31,18 @@ class VenueResponse(BaseModel):
     class Config:
         orm_mode = True
 
+class VenueHoursUpdate(BaseModel):
+    open_time: Optional[time] = None
+    close_time: Optional[time] = None
+    blackout_days: Optional[str] = None
+
 class VenueUpdate(BaseModel):
     name: Optional[str] = None
     location: Optional[str] = None
     event_type: Optional[str] = None
     availability: Optional[bool] = None
     hourly_rate: Optional[float] = None
+    venue_hours: Optional[VenueHoursUpdate] = None
 
     class Config:
         orm_mode = True

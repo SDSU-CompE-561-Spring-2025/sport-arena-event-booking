@@ -14,6 +14,9 @@ class Venue(Base):
     image = Column(String, nullable=True)  # default null
     availability = Column(Boolean, default=True)
     hourly_rate = Column(Float, nullable=False)
+    contact_info = Column(String, nullable=True)  # default null
+    venue_hours = relationship("VenueHours", backref="venue", cascade="all, delete-orphan")
     deleted = Column(Boolean, default=False)
 
     owners = relationship("VenueOwner", back_populates="venue")
+
