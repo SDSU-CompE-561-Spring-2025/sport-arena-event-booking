@@ -17,6 +17,9 @@ RUN pip install --upgrade pip && \
     poetry config virtualenvs.create false && \
     poetry install --no-root
 
+RUN rm -rf pyproject.toml
+RUN rm -rf poetry.lock
+
 WORKDIR /app
 RUN git init && \
     git remote add origin https://github.com/SDSU-CompE-561-Spring-2025/sport-arena-event-booking.git 
