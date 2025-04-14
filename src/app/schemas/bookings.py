@@ -13,7 +13,7 @@ class BookingCreate(BaseModel):
 
 class BookingUpdate(BaseModel):
    venue_id: Optional[int] = None
-   date: Optional[date] = None
+   booking_date: Optional[date] = None
    time_slot: Optional[str] = None
    hours: Optional[int] = None
 
