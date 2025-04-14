@@ -6,7 +6,7 @@ from app.core.database import Base, engine
 
 
 app = FastAPI(debug=True)
-#Base.metadata.drop_all(bind=engine)
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 app.include_router(venue_router, prefix='/venue', tags=['venue'])

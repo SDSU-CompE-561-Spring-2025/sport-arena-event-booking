@@ -42,8 +42,8 @@ def create_venue_service(venue: VenueCreate, db: Session) -> Venue:
     if venue.venue_hours:
         for hour in venue.venue_hours:
             today = date.today()  # Use today's date as a placeholder
-            open_time = datetime.combine(today, hour.open_time.replace(tzinfo=None))
-            close_time = datetime.combine(today, hour.close_time.replace(tzinfo=None))
+            open_time = hour.open_time.time() if isinstance(hour.open_time, datetime) else hour.open_time
+            close_time = hour.close_time.time() if isinstance(hour.close_time, datetime) else hour.close_time
 
             venue_hour = VenueHours(
                 venue_id=new_venue.id,
@@ -73,16 +73,17 @@ def update_venue_service(venue_id: int, update_data: VenueUpdate, db: Session) -
             hours_data = update_data.venue_hours.dict(exclude_unset=True)
 
             if "open_time" in hours_data:
-                venue_hours.open_time = datetime.combine(date.today(), hours_data["open_time"].replace(tzinfo=None))
+                venue_hours.open_time = hours_data["open_time"]
             if "close_time" in hours_data:
-                venue_hours.close_time = datetime.combine(date.today(), hours_data["close_time"].replace(tzinfo=None))
+                venue_hours.close_time = hours_data["close_time"]
             if "blackout_days" in hours_data:
                 venue_hours.blackout_days = hours_data["blackout_days"]
 
             venue_hours.last_updated = datetime.utcnow()
 
     db.commit()
-    venue = db.query(Venue).options(joinedload(Venue.venue_hours)).filter(Venue.id == venue_id).first()
+    db.refresh(venue)
+    #venue = db.query(Venue).options(joinedload(Venue.venue_hours)).filter(Venue.id == venue_id).first()
     return venue
 
 def delete_venue_service(venue_id: int, db: Session):
