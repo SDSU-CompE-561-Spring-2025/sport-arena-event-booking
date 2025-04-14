@@ -18,8 +18,8 @@ class VenueOwnerResponse(BaseModel):
         orm_mode = True
 
 class VenueOwnerUpdate(BaseModel):
-    user_id: Optional[int] = None
-    venue_id: Optional[int] = None
+    venue_id: int 
+    new_user_id: int
     deleted: Optional[bool] = None 
 
     class Config:

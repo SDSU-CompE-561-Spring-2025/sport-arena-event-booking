@@ -12,9 +12,9 @@ router = APIRouter()
 def create_venue_owner(venue_owner: VenueOwnerCreate, db: Session = Depends(get_db)):
     return create_venue_owner_service(venue_owner, db)
 
-@router.put("/update/{venue_id}/{user_id}", response_model=VenueOwnerResponse)
-def update_venue(venue_id: int, user_id: int, update_data: VenueOwnerUpdate, db: Session = Depends(get_db)):
-    venue_owner = update_venue_owner_service(venue_id, user_id, update_data, db)
+@router.put("/update", response_model=VenueOwnerResponse)
+def update_venue(update_data: VenueOwnerUpdate, db: Session = Depends(get_db)):
+    venue_owner = update_venue_owner_service(update_data=update_data, venue_id=update_data.venue_id, new_user_id=update_data.new_user_id, db=db)
     if not venue_owner:
         raise HTTPException(status_code=404, detail="Venue owner not found")
     return venue_owner
@@ -26,10 +26,10 @@ def delete_venue_owner(venue_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Venue owner not found")
     return {"detail": "Venue owner deleted successfully"}
 
-@router.get("/{venue_id}", response_model=VenueOwnerResponse)
+@router.get("/venue/{venue_id}", response_model=VenueOwnerResponse)
 def get_venue_owner(venue_id: int, db: Session = Depends(get_db)):
-    return get_venue_owner_service(venue_id, db)
+    return get_venue_owner_service(venue_id=venue_id, db=db)
 
-@router.get("/{user_id}/venues_owned", response_model=List[VenueOwnerResponse])
-def get_owned_venues(db: Session = Depends(get_db)):
-    return get_venues_owned_service(db)
+@router.get("/user/{user_id}", response_model=List[VenueOwnerResponse])
+def get_owned_venues(user_id: int, db: Session = Depends(get_db)):
+    return get_venues_owned_service(user_id=user_id, db=db)
