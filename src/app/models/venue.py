@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, Float
+from sqlalchemy.orm import relationship
 from app.core.database import Base
 
 class Venue(Base):
@@ -14,3 +15,5 @@ class Venue(Base):
     availability = Column(Boolean, default=True)
     hourly_rate = Column(Float, nullable=False)
     deleted = Column(Boolean, default=False)
+
+    owners = relationship("VenueOwner", back_populates="venue")

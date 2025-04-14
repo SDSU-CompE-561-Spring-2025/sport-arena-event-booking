@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from app.core.database import Base
 
 class User(Base):
@@ -16,3 +17,5 @@ class User(Base):
     phone_number = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     deleted = Column(Boolean, default=False)
+
+    owned_venues = relationship("VenueOwner", back_populates="user")
