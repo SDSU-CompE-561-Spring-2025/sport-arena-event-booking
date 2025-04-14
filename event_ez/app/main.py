@@ -5,7 +5,7 @@ from app.routes.venue_owner import router as venue_owner_router
 from app.core.database import Base, engine
 
 
-app = FastAPI()
+app = FastAPI(debug=True)
 Base.metadata.create_all(bind=engine)
 
 app.include_router(venue_router, prefix='/venue', tags=['venue'])

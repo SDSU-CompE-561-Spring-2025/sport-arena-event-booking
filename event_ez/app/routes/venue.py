@@ -5,6 +5,7 @@ from app.models.venue import Venue
 from app.schemas.venue import VenueCreate, VenueUpdate, VenueResponse
 from app.models.venue_hours import VenueHours
 from app.schemas.venue_hours import VenueHoursCreate, VenueHoursResponse
+from app.services.venue import *
 from typing import List
 
 
