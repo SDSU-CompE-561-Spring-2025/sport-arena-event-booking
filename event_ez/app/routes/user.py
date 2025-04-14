@@ -48,7 +48,7 @@ def list_users(db: Session = Depends(get_db)):
 def create_user_by_admin(
     user: UserCreate,
     db: Session = Depends(get_db),
-    current_admin: User = Depends(require_admin)  # 👈 only Main Admin can access
+    current_admin: User = Depends(require_admin)  
 ):
     return register_user_service(user, db)
 
