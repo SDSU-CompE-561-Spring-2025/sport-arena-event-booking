@@ -27,10 +27,12 @@ TECHNOLOGIES
 SETUP
 
     1. Clone the repository
-    2. Configure Environment Variables
-    3. Run via Docker
+    2. Run via Docker
        - Build the Docker Image
        - Run the Container
+    3. Pull using git pull origin main
+    4. Expose port 8000
+    5. Go to http://localhost:8000/docs 
 
 TESTING USING CURL
 
