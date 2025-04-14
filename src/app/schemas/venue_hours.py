@@ -14,7 +14,8 @@ class VenueHoursResponse(BaseModel):
     open_time: datetime
     close_time: datetime
     last_updated: Optional[datetime]
-    blackout_days: Optional[List[str]] = []
+    blackout_days: Optional[str] = None
+    deleted: Optional[bool] = False
 
     class Config:
         orm_mode = True

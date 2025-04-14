@@ -5,6 +5,7 @@ from app.models.venue_hours import VenueHours
 from app.schemas.venue import VenueCreate, VenueResponse, VenueUpdate
 from app.schemas.venue_hours import VenueHoursCreate, VenueHoursResponse
 from typing import List, Optional
+from datetime import datetime, date
 
 def get_venues_service(db: Session) -> List[Venue]:
     venues = db.query(Venue).filter(Venue.deleted == False).all()
@@ -33,11 +34,28 @@ def create_venue_service(venue: VenueCreate, db: Session) -> Venue:
         availability=venue.availability,
         hourly_rate=venue.hourly_rate,
         contact_info=venue.contact_info,
-        venue_hours=venue.venue_hours
     )
     db.add(new_venue)
     db.commit()
     db.refresh(new_venue)
+
+    if venue.venue_hours:
+        for hour in venue.venue_hours:
+            today = date.today()  # Use today's date as a placeholder
+            open_time = datetime.combine(today, hour.open_time.replace(tzinfo=None))
+            close_time = datetime.combine(today, hour.close_time.replace(tzinfo=None))
+
+            venue_hour = VenueHours(
+                venue_id=new_venue.id,
+                open_time=open_time,
+                close_time=close_time,
+                blackout_days=hour.blackout_days,
+                last_updated=datetime.utcnow()
+            )
+            db.add(venue_hour)
+
+        db.commit()
+
     return new_venue
 
 def update_venue_service(venue_id: int, update_data: VenueUpdate, db: Session) -> Venue:
