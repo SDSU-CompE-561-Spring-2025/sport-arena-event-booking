@@ -30,9 +30,10 @@ SETUP
     2. Run via Docker
        - Build the Docker Image
        - Run the Container
-    3. Pull using git pull origin main
-    4. Expose port 8000
-    5. Go to http://localhost:8000/docs 
+    3. Change Directory to "/app"
+    4. Pull using "git pull origin main"
+    5. Expose port 8000
+    6. Go to http://localhost:8000/docs 
 
 TESTING USING CURL
 
