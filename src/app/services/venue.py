@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from fastapi import HTTPException
 from app.models.venue import Venue
 from app.models.venue_hours import VenueHours
@@ -63,11 +63,26 @@ def update_venue_service(venue_id: int, update_data: VenueUpdate, db: Session) -
     if not venue:
         raise HTTPException(status_code=404, detail="Venue not found")
 
-    for key, value in update_data.dict(exclude_unset=True).items():
+    for key, value in update_data.dict(exclude_unset=True, exclude={"venue_hours"}).items():
         setattr(venue, key, value)
 
+    # Update venue_hours if present
+    if update_data.venue_hours:
+        venue_hours = db.query(VenueHours).filter(VenueHours.venue_id == venue.id, VenueHours.deleted == False).first()
+        if venue_hours:
+            hours_data = update_data.venue_hours.dict(exclude_unset=True)
+
+            if "open_time" in hours_data:
+                venue_hours.open_time = datetime.combine(date.today(), hours_data["open_time"].replace(tzinfo=None))
+            if "close_time" in hours_data:
+                venue_hours.close_time = datetime.combine(date.today(), hours_data["close_time"].replace(tzinfo=None))
+            if "blackout_days" in hours_data:
+                venue_hours.blackout_days = hours_data["blackout_days"]
+
+            venue_hours.last_updated = datetime.utcnow()
+
     db.commit()
-    db.refresh(venue)
+    venue = db.query(Venue).options(joinedload(Venue.venue_hours)).filter(Venue.id == venue_id).first()
     return venue
 
 def delete_venue_service(venue_id: int, db: Session):

@@ -31,12 +31,18 @@ class VenueResponse(BaseModel):
     class Config:
         orm_mode = True
 
+class VenueHoursUpdate(BaseModel):
+    open_time: Optional[time] = None
+    close_time: Optional[time] = None
+    blackout_days: Optional[str] = None
+
 class VenueUpdate(BaseModel):
     name: Optional[str] = None
     location: Optional[str] = None
     event_type: Optional[str] = None
     availability: Optional[bool] = None
     hourly_rate: Optional[float] = None
+    venue_hours: Optional[VenueHoursUpdate] = None
 
     class Config:
         orm_mode = True
