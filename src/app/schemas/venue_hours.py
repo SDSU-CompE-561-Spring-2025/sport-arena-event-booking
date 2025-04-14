@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import time
+from datetime import time, datetime
 from typing import List, Optional
 
 class VenueHoursCreate(BaseModel):

@@ -86,7 +86,7 @@ def update_venue_service(venue_id: int, update_data: VenueUpdate, db: Session) -
     #venue = db.query(Venue).options(joinedload(Venue.venue_hours)).filter(Venue.id == venue_id).first()
     return venue
 
-def delete_venue_service(venue_id: int, db: Session):
+def delete_venue_service(venue_id: int, db: Session) -> Venue:
     venue = db.query(Venue).filter(Venue.id == venue_id, Venue.deleted == False).first()
     if not venue:
         raise HTTPException(status_code=404, detail="Venue not found")
@@ -94,5 +94,7 @@ def delete_venue_service(venue_id: int, db: Session):
     venue.deleted = True
     db.commit()
     db.refresh(venue)
+    venue.message = "Venue deleted successfully"
+    
     return venue
 

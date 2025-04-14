@@ -35,4 +35,4 @@ def delete_venue(venue_id: int, db: Session = Depends(get_db)):
     venue = delete_venue_service(venue_id, db)
     if not venue:
         raise HTTPException(status_code=404, detail="Venue not found")
-    return {"detail": "Venue deleted successfully"}
+    return delete_venue_service(venue_id, db)
