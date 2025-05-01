@@ -21,7 +21,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-yellow-100 flex items-start justify-center pt-20 px-4">
       <div className="w-full max-w-xl p-8">
         <h2 className="text-2xl font-bold text-center bg-blue-950 text-white py-3 rounded-md mb-6">
-          LOGIN
+          Login
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
