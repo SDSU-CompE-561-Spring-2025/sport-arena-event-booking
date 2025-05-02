@@ -34,7 +34,9 @@ def register_user_service(user: UserCreate, db: Session) -> User:
     return new_user
 
 def login_user_service(form_data: OAuth2PasswordRequestForm, db: Session) -> Token:
-    user = db.query(User).filter(User.username == form_data.username).first()
+    user = db.query(User).filter(User.email == form_data.username).first()
+    if user:
+        print("Stored hash:", user.password_hash)
     if not user or not verify_password(form_data.password, user.password_hash):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
@@ -43,7 +45,6 @@ def login_user_service(form_data: OAuth2PasswordRequestForm, db: Session) -> Tok
         expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
     )
 
-    # ✅ Save login session
     new_session = Session(session_token=access_token)
     db.add(new_session)
     db.commit()
