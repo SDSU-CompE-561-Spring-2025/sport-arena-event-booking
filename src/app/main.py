@@ -4,9 +4,10 @@ from app.routes.venue import router as venue_router
 from app.routes.venue_owner import router as venue_owner_router
 from app.routes.bookings import router as bookings_router
 from app.core.database import Base, engine
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI(debug=True)
-Base.metadata.create_all(bind=engine)
 
 app.include_router(venue_router, prefix='/venue', tags=['venue'])
 app.include_router(user_router, prefix="/user", tags=["user"])
@@ -20,3 +21,11 @@ Base = declarative_base()
 engine = create_engine("sqlite:///./test.db")
 
 Base.metadata.create_all(bind=engine)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
