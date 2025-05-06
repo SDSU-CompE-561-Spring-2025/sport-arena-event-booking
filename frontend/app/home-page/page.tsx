@@ -175,7 +175,7 @@ export default function UserDashboard() {
               <div className="flex justify-between">
                 <Link href={`/booking/${venue.id}`}>
                   <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    Start Booking
+                    Venue Details
                   </button>
                 </Link>
               </div>
