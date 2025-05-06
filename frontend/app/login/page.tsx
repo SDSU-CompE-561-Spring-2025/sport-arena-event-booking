@@ -50,7 +50,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-blue-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-xl bg-white shadow-md p-6 space-y-4">
+      <div className="w-full max-w-md rounded-xl bg-yellow-100 shadow-md p-6 space-y-4">
         <h2 className="text-2xl font-bold text-center">Login</h2>
 
         {signupStatus && (
@@ -68,11 +68,13 @@ export default function LoginPage() {
         <form onSubmit={handleLogin} className="space-y-3">
           <div>
             <Label>Email</Label>
-            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required 
+            className="bg-white" />
           </div>
           <div>
             <Label>Password</Label>
-            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required 
+            className="bg-white" />
           </div>
           <Button type="submit" className="w-full bg-blue-950 text-white hover:bg-blue-800" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
