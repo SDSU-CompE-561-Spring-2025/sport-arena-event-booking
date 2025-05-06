@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function SummaryPage() {
     const [bookingData, setBookingData] = useState(null);
@@ -18,11 +19,50 @@ export default function SummaryPage() {
         }
     }, []);
 
-    const handleConfirmBooking = () => {
-        // Later replace with axios.post to backend
-        router.push('/confirmation');
+    const handleConfirmBooking = async () => {
+        if (!bookingData) {
+            console.error("No booking data found");
+            alert("Booking details are missing. Please go back and fill the form again.");
+            return;
+        }
+        try {
+            const token = localStorage.getItem('access_token');
+
+            if (!token) {
+                alert('Please login to confirm booking');
+                return;
+            }
+
+            const payload = {
+                venue_id: 123,  // 🔧 Replace with real ID later
+                date: bookingData.date,
+                time_slot: bookingData.time,
+                hours: bookingData.hours,
+            };
+
+            const response = await axios.post('http://localhost:8000/bookings', payload, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log('Booking successful:', response.data);
+            router.push('/confirmation');
+            return;
+        } catch (error) {
+            console.error('Booking failed:', error);
+
+            if (error.response) {
+                console.log('Error response from backend:', error.response.data);
+                alert(`Error ${error.response.status}: ${JSON.stringify(error.response.data)}`);
+            } else {
+                alert('Network or unknown error occurred');
+            }
+        }
     };
 
+    // ✅ This return should be outside the handleConfirmBooking
     if (!bookingData) {
         return <p style={{ padding: '2rem', textAlign: 'center' }}>Loading summary...</p>;
     }

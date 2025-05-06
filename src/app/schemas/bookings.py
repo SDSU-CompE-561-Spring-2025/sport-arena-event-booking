@@ -4,7 +4,7 @@ from typing import Optional
 
 
 class BookingCreate(BaseModel):
-   user_id: int
+   user_id: Optional[int] = None 
    venue_id: int
    date: date
    time_slot: str
