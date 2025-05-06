@@ -10,26 +10,12 @@ export default function BookingPage() {
     const [time, setTime] = useState('');
     const [hours, setHours] = useState(1);
     const [message, setMessage] = useState('');
-    const [isAvailable, setIsAvailable] = useState(null);
-    const [bookingConfirmed, setBookingConfirmed] = useState(false);
     const [venueId, setVenueId] = useState('');
 
     const today = new Date().toISOString().split('T')[0];
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() + 6);
     const maxDateStr = maxDate.toISOString().split('T')[0];
-
-    const handleCheckAvailability = async () => {
-        try {
-            const response = await axios.get(`/api/check-availability`, {
-                params: { venue_id: venueId, date, time_slot: time, hours },
-            });
-            setIsAvailable(response.data.available);
-        } catch (error) {
-            console.error('Error checking availability', error);
-            setIsAvailable(false);
-        }
-    };
 
     const handleReviewBooking = () => {
         const bookingDetails = {
@@ -46,13 +32,11 @@ export default function BookingPage() {
 
     return (
         <div style={{ backgroundColor: '#EAE2B7', minHeight: '100vh', fontFamily: 'Arial' }}>
-            {/* Header */}
             <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#D62828', padding: '1rem 2rem' }}>
                 <Image src="/sdsu_logo.jpeg" alt="SDSU Logo" width={60} height={60} />
                 <h2 style={{ color: 'white', marginLeft: '1rem', fontSize: '1.75rem' }}>Event Ez</h2>
             </div>
 
-            {/* Booking Form */}
             <div style={{ maxWidth: '500px', margin: '2rem auto', padding: '2rem', backgroundColor: '#fff', borderRadius: '10px' }}>
                 <h1 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#003049', fontWeight: 'bold', fontSize: '2rem' }}>Booking Details</h1>
 
@@ -60,10 +44,10 @@ export default function BookingPage() {
                 <input style={inputStyle} value={eventName} onChange={(e) => setEventName(e.target.value)} placeholder="Enter event name" /><br />
 
                 <label style={labelStyle}>Date:</label>
-                <input type="date" style={inputStyle} value={date} onChange={(e) => setDate(e.target.value)} placeholder="dd/mm/yyyy" min={today} max={maxDateStr} /><br />
+                <input type="date" style={inputStyle} value={date} onChange={(e) => setDate(e.target.value)} min={today} max={maxDateStr} /><br />
 
                 <label style={labelStyle}>Time:</label>
-                <input type="time" style={inputStyle} value={time} onChange={(e) => setTime(e.target.value)} placeholder="hh:mm" /><br />
+                <input type="time" style={inputStyle} value={time} onChange={(e) => setTime(e.target.value)} /><br />
 
                 <label style={labelStyle}>Hours:</label>
                 <input
@@ -72,28 +56,15 @@ export default function BookingPage() {
                     max="5"
                     style={inputStyle}
                     value={hours}
-                    onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        if (value >= 1 && value <= 5) {
-                            setHours(value);
-                        } else if (value > 5) {
-                            setHours(5);
-                        } else {
-                            setHours(1);
-                        }
-                    }}
+                    onChange={(e) => setHours(Math.min(Math.max(parseInt(e.target.value), 1), 5))}
                     placeholder="Number of hours"
                 /><br />
 
                 <label style={labelStyle}>Message to Venue Manager (optional):</label>
-                <textarea style={{ ...inputStyle, height: '80px' }} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Optional message" /><br />
+                <textarea style={{ ...inputStyle, height: '80px' }} value={message} onChange={(e) => setMessage(e.target.value)} /><br />
 
                 <button
-                    style={{
-                        ...primaryButton,
-                        backgroundColor: '#F77F00',
-                        cursor: 'pointer',
-                    }}
+                    style={{ ...primaryButton, backgroundColor: '#F77F00', cursor: 'pointer' }}
                     onClick={handleReviewBooking}
                 >
                     Review Booking
@@ -101,13 +72,12 @@ export default function BookingPage() {
             </div>
 
             <style jsx>{`
-        input::placeholder,
-        textarea::placeholder {
-          color: #003049;
-          opacity: 1;
-          font-weight: 500;
-        }
-      `}</style>
+                input::placeholder, textarea::placeholder {
+                    color: #003049;
+                    opacity: 1;
+                    font-weight: 500;
+                }
+            `}</style>
         </div>
     );
 }

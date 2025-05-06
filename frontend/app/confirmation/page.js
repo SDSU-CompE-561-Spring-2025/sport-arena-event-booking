@@ -14,8 +14,8 @@ export default function BookingConfirmation() {
                     Have great fun! 🎉
                 </p>
 
-                <Link href="/">
-                    <button style={buttonStyle}>Go to Home</button>
+                <Link href="/home-page">
+                    <button style={buttonStyle}>Go to Dashboard</button>
                 </Link>
             </div>
         </div>

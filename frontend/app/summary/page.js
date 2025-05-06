@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function SummaryPage() {
     const [bookingData, setBookingData] = useState(null);
@@ -21,42 +22,45 @@ export default function SummaryPage() {
     }, []);
 
     const handleConfirmBooking = async () => {
-        setLoading(true);
-        setMessage(null);
-
-        const token = localStorage.getItem('access_token');
-        const bookingData = JSON.parse(localStorage.getItem('bookingDetails') || '{}');
+        if (!bookingData) {
+            console.error("No booking data found");
+            alert("Booking details missing. Please go back and try again.");
+            return;
+        }
 
         try {
-            const res = await fetch('http://localhost:8000/bookings/', {
-                method: 'POST',
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                alert('Please login to confirm booking');
+                return;
+            }
+
+            const payload = {
+                venue_id: 123, // Replace later with dynamic ID
+                date: bookingData.date,
+                time_slot: bookingData.time,
+                hours: bookingData.hours,
+            };
+
+            const response = await axios.post('http://localhost:8000/bookings/', payload, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    venue_id: Number(bookingData.venueId),
-                    date: bookingData.date,
-                    time_slot: bookingData.time,
-                    hours: bookingData.hours,
-                }),
             });
 
-            const data = await res.json();
-            setLoading(false);
+            console.log('Booking successful:', response.data);
+            router.push('/confirmation');
+            return;
 
-            if (res.ok) {
-                router.push('/confirmation');
-            } else {
-                const errorDetail = Array.isArray(data.detail)
-                    ? data.detail.map((e) => e.msg).join(', ')
-                    : data.detail;
-                setMessage(errorDetail);
-            }
         } catch (error) {
-            setLoading(false);
-            setMessage('Booking failed. Please try again.');
-            console.error(error);
+            console.error('Booking failed:', error);
+            if (error.response) {
+                console.log('Error response from backend:', error.response.data);
+                alert(`Error ${error.response.status}: ${JSON.stringify(error.response.data)}`);
+            } else {
+                alert('Network or unknown error occurred');
+            }
         }
     };
 
@@ -71,13 +75,11 @@ export default function SummaryPage() {
                     Booking Summary
                 </h2>
 
-                <p style={{ color: '#000' }}><strong>Date:</strong> {bookingData.date}</p>
-                <p style={{ color: '#000' }}><strong>Time:</strong> {bookingData.time}</p>
-                <p style={{ color: '#000' }}><strong>Hours:</strong> {bookingData.hours}</p>
-
-                {message && (
-                    <p style={{ color: 'red', marginTop: '1rem', fontWeight: 'bold' }}>{message}</p>
-                )}
+                <p><strong>Event Name:</strong> {bookingData.eventName}</p>
+                <p><strong>Date:</strong> {bookingData.date}</p>
+                <p><strong>Time:</strong> {bookingData.time}</p>
+                <p><strong>Hours:</strong> {bookingData.hours}</p>
+                <p><strong>Message:</strong> {bookingData.message || '—'}</p>
 
                 <button
                     onClick={handleConfirmBooking}
