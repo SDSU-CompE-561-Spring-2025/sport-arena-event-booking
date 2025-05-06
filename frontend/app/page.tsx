@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-yellow-100 p-6">
+    <main className="min-h-screen bg-white-100 p-6">
       {/* Header */}
       <header className="bg-blue-950 text-white p-4 flex justify-between items-center rounded-md">
         <h1 className="text-xl font-bold">EventEz</h1>
@@ -20,7 +20,7 @@ export default function Home() {
 
       {/* Centered Image */}
       <section className="mt-10 flex justify-center">
-        <div className="bg-orange-500 rounded-lg shadow-lg p-4">
+        <div className="bg-[#F77F00] rounded-lg shadow-lg p-4">
           <Image
             src="/arena.png"
             alt="Arena Booking"

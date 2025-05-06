@@ -61,8 +61,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-yellow-100 flex items-center justify-center p-4">
-      <div className="rounded-xl w-full max-w-md space-y-4 bg-white shadow-md p-6">
+    <div className="min-h-screen bg-white-100 flex items-center justify-center p-4">
+      <div className="rounded-xl w-full max-w-md space-y-4 bg-yellow-100 shadow-xl p-6">
         <h2 className="text-2xl font-bold text-center bg-blue-950 text-white py-2 rounded-md">SIGNUP</h2>
 
         {feedback && (

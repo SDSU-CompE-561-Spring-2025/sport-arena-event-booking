@@ -66,13 +66,13 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-yellow-100 p-6">
+    <div className="min-h-screen bg-white p-6">
       <nav className="bg-[#003049] shadow px-6 py-4 mb-6 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sticky top-0 z-10">
         <h1 className="text-xl font-bold text-white">EventEz</h1>
         <div className="flex gap-4">
           <Button 
             onClick={handleGoHome} 
-            className="bg-[#F77F00] text-[#003049] px-4 py-2 rounded-full font-semibold hover:bg-[#d56600]"
+            className="bg-white text-[#003049] px-4 py-2 rounded-full font-semibold hover:bg-gray-100"
           >
             Home Page
           </Button>
@@ -85,7 +85,8 @@ export default function UserProfile() {
       <h1 className="text-2xl font-bold">User Profile</h1>
 
       <section>
-        <h2 className="text-xl font-semibold">Current Bookings</h2>
+        <h2 className="text-xl font-semibold"
+        >Current Bookings</h2>
         {currentBookings.map(booking => (
           <Card key={booking.id} className="my-2">
             <CardContent>

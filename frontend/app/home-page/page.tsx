@@ -95,10 +95,10 @@ export default function UserDashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-yellow-100 p-6">
+    <div className="min-h-screen bg-white-100 p-6">
       <nav className="bg-[#003049] shadow px-6 py-4 mb-6 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sticky top-0 z-10">
         <h1 className="text-xl font-bold text-white">EventEz</h1>
-        <div className="w-full sm:w-1/3 flex items-center border border-[#F77F00] rounded px-2">
+        <div className="w-full sm:w-1/3 flex items-center border border-white rounded px-2">
           <Search className="text-white w-4 h-4 mr-2" />
           <input
             type="text"
@@ -107,7 +107,7 @@ export default function UserDashboard() {
           />
         </div>
         <Link href="/user-dashboard" className="text-blue-600 hover:underline">
-          <button className="bg-[#F77F00] text-[#003049] px-4 py-2 rounded-full font-semibold hover:opacity-90">
+          <button className="bg-white border-[#F77F00] text-[#003049] px-4 py-2 rounded-full font-semibold hover:opacity-90">
             My Dashboard
           </button>
         </Link>
