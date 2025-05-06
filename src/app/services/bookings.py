@@ -3,8 +3,11 @@ from app.models.bookings import Booking
 from app.schemas.bookings import BookingCreate, BookingUpdate, BookingResponse
 from typing import List
 
-def create_booking(db: Session, booking_data: BookingCreate) -> Booking:
-   new_booking = Booking(**booking_data.dict())
+def create_booking(db: Session, booking_data: BookingCreate, user_id:int) -> Booking:
+   data = booking_data.dict()
+   data['user_id'] = user_id
+   new_booking = Booking(**data)
+   print("random")
    db.add(new_booking)
    db.commit()
    db.refresh(new_booking)

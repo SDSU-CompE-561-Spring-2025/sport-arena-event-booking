@@ -38,7 +38,7 @@ export default function BookingPage() {
             time,
             hours,
             message,
-            venueId,
+            venueId: 2025,
         };
         localStorage.setItem('bookingDetails', JSON.stringify(bookingDetails));
         window.location.href = '/summary';

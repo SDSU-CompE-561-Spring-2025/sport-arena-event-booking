@@ -12,13 +12,11 @@ router = APIRouter(prefix="", tags=["bookings"])
 
 @router.post("/", response_model=BookingResponse)
 def create_booking(
-   booking_data: BookingCreate,
-   db: Session = Depends(get_db),
-   current_user: User = Depends(get_current_user)
+    booking_data: BookingCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
-   # override user_id to prevent impersonation
-   booking_data.user_id = current_user.id
-   return booking_service.create_booking(db, booking_data)
+    return booking_service.create_booking(db, booking_data, user_id=current_user.id)
 
 
 @router.get("/", response_model=list[BookingResponse])
