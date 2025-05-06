@@ -44,21 +44,6 @@ export default function VenueDetail({ venue }: any) {
           <Button size="lg" onClick={() => router.push('/booking')}>
             Book Now
           </Button>
-
-      {/* <h1 className="text-3xl font-bold mb-4">{venue.name}</h1>
-      <Gallery images={venue.images} />
-      <div className="flex items-center gap-4 my-4">
-        <span>⭐ {venue.rating} ({venue.reviews})</span>
-        <span>👥 {venue.capacity}</span>
-        <span>📐 {venue.size} sqft</span>
-      </div>
-      <p className="mb-6">{"About the Venue"}</p>
-      <p className="mb-6">{venue.description}</p>
-
-      <Button size="lg" onClick={() => router.push('/booking')}>
-        Book Now
-      </Button> */}
-
     </div>
   );
 }
