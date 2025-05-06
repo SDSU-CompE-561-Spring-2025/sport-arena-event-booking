@@ -18,7 +18,7 @@ const venueData: Record<string, Venue> = {
         reviews: 120,
         capacity: 5000,
         size: 1800,
-        images: ['/public/venue_image_placeholder.png', '/app/frontend/public/venue_image_placeholder.png'],
+        images: ['/venue_image_placeholder.png', '/venue_image_placeholder.png', '/venue_image_placeholder.png'],
         description: 'A spacious venue ideal for concerts and sports.',
     },
     'lakeside-hall': {
