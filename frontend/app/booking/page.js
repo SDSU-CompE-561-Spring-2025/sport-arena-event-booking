@@ -31,18 +31,42 @@ export default function BookingPage() {
     };
 
     return (
-        <div style={{ backgroundColor: '#EAE2B7', minHeight: '100vh', fontFamily: 'Arial' }}>
-            <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#D62828', padding: '1rem 2rem' }}>
+        <div style={{ 
+            backgroundColor: '#EAE2B7',
+            minHeight: '100vh',
+            fontFamily: 'Arial',
+            fontWeight: 'bold',
+            display: 'flex',
+            flexDirection: 'column',
+            }}
+        >
+            <div style={{ 
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: '#003049',
+                padding: '1rem 2rem',
+                marginTop: '1.5rem',
+                borderRadius: '16px',
+                width: '97%',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                }}
+            >
                 <Image src="/sdsu_logo.jpeg" alt="SDSU Logo" width={60} height={60} />
-                <h2 style={{ color: 'white', marginLeft: '1rem', fontSize: '1.75rem' }}>Event Ez</h2>
+                <h2 style={{ color: 'white', marginLeft: '1rem', fontSize: '1.875rem' }}>EventEz</h2>
             </div>
 
             <div style={{ maxWidth: '500px', margin: '2rem auto', padding: '2rem', backgroundColor: '#fff', borderRadius: '10px' }}>
-                <h1 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#003049', fontWeight: 'bold', fontSize: '2rem' }}>Booking Details</h1>
+                <h1 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#003049', fontWeight: 'bold', fontSize: '1.5rem' }}>Booking Details</h1>
 
                 <label style={labelStyle}>Event Name:</label>
-                <input style={inputStyle} value={eventName} onChange={(e) => setEventName(e.target.value)} placeholder="Enter event name" /><br />
-
+                <input style={inputStyle} value={eventName} onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[a-zA-Z0-9 ]*$/.test(value)) {
+                        setEventName(e.target.value)}
+                    }}
+                    placeholder="Enter event name" /><br />
                 <label style={labelStyle}>Date:</label>
                 <input type="date" style={inputStyle} value={date} onChange={(e) => setDate(e.target.value)} min={today} max={maxDateStr} /><br />
 
