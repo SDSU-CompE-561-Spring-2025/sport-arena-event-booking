@@ -1,0 +1,1850 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "title": "FastAPI",
+      "version": "0.1.0"
+    },
+    "paths": {
+      "/venue/venues": {
+        "get": {
+          "tags": [
+            "venue"
+          ],
+          "summary": "Get Venues",
+          "operationId": "get_venues_venue_venues_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "items": {
+                      "$ref": "#/components/schemas/VenueResponse"
+                    },
+                    "type": "array",
+                    "title": "Response Get Venues Venue Venues Get"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/venue/venue_hours/{venue_id}": {
+        "get": {
+          "tags": [
+            "venue"
+          ],
+          "summary": "Get Venue Hours",
+          "operationId": "get_venue_hours_venue_venue_hours__venue_id__get",
+          "parameters": [
+            {
+              "name": "venue_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Venue Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/VenueHoursResponse"
+                    },
+                    "title": "Response Get Venue Hours Venue Venue Hours  Venue Id  Get"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/venue/create": {
+        "post": {
+          "tags": [
+            "venue"
+          ],
+          "summary": "Create Venue",
+          "operationId": "create_venue_venue_create_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VenueCreate"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VenueResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/venue/update/{venue_id}": {
+        "put": {
+          "tags": [
+            "venue"
+          ],
+          "summary": "Update Venue",
+          "operationId": "update_venue_venue_update__venue_id__put",
+          "parameters": [
+            {
+              "name": "venue_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Venue Id"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VenueUpdate"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VenueResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/venue/delete/{venue_id}": {
+        "delete": {
+          "tags": [
+            "venue"
+          ],
+          "summary": "Delete Venue",
+          "operationId": "delete_venue_venue_delete__venue_id__delete",
+          "parameters": [
+            {
+              "name": "venue_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Venue Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VenueResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/register": {
+        "post": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Register User",
+          "operationId": "register_user_user_register_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCreate"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/me": {
+        "get": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Get My Profile",
+          "operationId": "get_my_profile_user_me_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "OAuth2PasswordBearer": []
+            }
+          ]
+        }
+      },
+      "/user/user/{user_id}": {
+        "get": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Get User By Id",
+          "operationId": "get_user_by_id_user_user__user_id__get",
+          "parameters": [
+            {
+              "name": "user_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "User Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/login": {
+        "post": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Login User",
+          "operationId": "login_user_user_login_post",
+          "requestBody": {
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Body_login_user_user_login_post"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Token"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/update/{user_id}": {
+        "put": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Update User",
+          "operationId": "update_user_user_update__user_id__put",
+          "parameters": [
+            {
+              "name": "user_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "User Id"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserUpdate"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/delete/{user_id}": {
+        "delete": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Delete User",
+          "operationId": "delete_user_user_delete__user_id__delete",
+          "parameters": [
+            {
+              "name": "user_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "User Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+  
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/users": {
+        "get": {
+          "tags": [
+            "user"
+          ],
+          "summary": "List Users",
+          "operationId": "list_users_user_users_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "items": {
+                      "$ref": "#/components/schemas/UserResponse"
+                    },
+                    "type": "array",
+                    "title": "Response List Users User Users Get"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/users/create": {
+        "post": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Create User By Admin",
+          "operationId": "create_user_by_admin_user_users_create_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCreate"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "OAuth2PasswordBearer": []
+            }
+          ]
+        }
+      },
+      "/user/logout": {
+        "post": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Logout User",
+          "operationId": "logout_user_user_logout_post",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+  
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "OAuth2PasswordBearer": []
+            }
+          ]
+        }
+      },
+      "/venue_owner/create": {
+        "post": {
+          "tags": [
+            "venue_owner"
+          ],
+          "summary": "Create Venue Owner",
+          "operationId": "create_venue_owner_venue_owner_create_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VenueOwnerCreate"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VenueOwnerResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/venue_owner/update": {
+        "put": {
+          "tags": [
+            "venue_owner"
+          ],
+          "summary": "Update Venue",
+          "operationId": "update_venue_venue_owner_update_put",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VenueOwnerUpdate"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VenueOwnerResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/venue_owner/delete/{venue_id}": {
+        "delete": {
+          "tags": [
+            "venue_owner"
+          ],
+          "summary": "Delete Venue Owner",
+          "operationId": "delete_venue_owner_venue_owner_delete__venue_id__delete",
+          "parameters": [
+            {
+              "name": "venue_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Venue Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+  
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/venue_owner/venue/{venue_id}": {
+        "get": {
+          "tags": [
+            "venue_owner"
+          ],
+          "summary": "Get Venue Owner",
+          "operationId": "get_venue_owner_venue_owner_venue__venue_id__get",
+          "parameters": [
+            {
+              "name": "venue_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Venue Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VenueOwnerResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/venue_owner/user/{user_id}": {
+        "get": {
+          "tags": [
+            "venue_owner"
+          ],
+          "summary": "Get Owned Venues",
+          "operationId": "get_owned_venues_venue_owner_user__user_id__get",
+          "parameters": [
+            {
+              "name": "user_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "User Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/VenueOwnerResponse"
+                    },
+                    "title": "Response Get Owned Venues Venue Owner User  User Id  Get"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/bookings/": {
+        "get": {
+          "tags": [
+            "bookings",
+            "bookings"
+          ],
+          "summary": "Get My Bookings",
+          "operationId": "get_my_bookings_bookings__get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "items": {
+                      "$ref": "#/components/schemas/BookingResponse"
+                    },
+                    "type": "array",
+                    "title": "Response Get My Bookings Bookings  Get"
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "OAuth2PasswordBearer": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "bookings",
+            "bookings"
+          ],
+          "summary": "Create Booking",
+          "operationId": "create_booking_bookings__post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingCreate"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BookingResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "OAuth2PasswordBearer": []
+            }
+          ]
+        }
+      },
+      "/bookings/all": {
+        "get": {
+          "tags": [
+            "bookings",
+            "bookings"
+          ],
+          "summary": "Get All Bookings",
+          "operationId": "get_all_bookings_bookings_all_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "items": {
+                      "$ref": "#/components/schemas/BookingResponse"
+                    },
+                    "type": "array",
+                    "title": "Response Get All Bookings Bookings All Get"
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "OAuth2PasswordBearer": []
+            }
+          ]
+        }
+      },
+      "/bookings/{booking_id}": {
+        "delete": {
+          "tags": [
+            "bookings",
+            "bookings"
+          ],
+          "summary": "Delete Booking",
+          "operationId": "delete_booking_bookings__booking_id__delete",
+          "security": [
+            {
+              "OAuth2PasswordBearer": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "booking_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Booking Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+  
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "bookings",
+            "bookings"
+          ],
+          "summary": "Update Booking",
+          "operationId": "update_booking_bookings__booking_id__put",
+          "security": [
+            {
+              "OAuth2PasswordBearer": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "booking_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Booking Id"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingUpdate"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BookingResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "bookings",
+            "bookings"
+          ],
+          "summary": "Get Booking By Id",
+          "operationId": "get_booking_by_id_bookings__booking_id__get",
+          "security": [
+            {
+              "OAuth2PasswordBearer": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "booking_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Booking Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BookingResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Body_login_user_user_login_post": {
+          "properties": {
+            "grant_type": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "password"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Grant Type"
+            },
+            "username": {
+              "type": "string",
+              "title": "Username"
+            },
+            "password": {
+              "type": "string",
+              "title": "Password"
+            },
+            "scope": {
+              "type": "string",
+              "title": "Scope",
+              "default": ""
+            },
+            "client_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Client Id"
+            },
+            "client_secret": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Client Secret"
+            }
+          },
+          "type": "object",
+          "required": [
+            "username",
+            "password"
+          ],
+          "title": "Body_login_user_user_login_post"
+        },
+        "BookingCreate": {
+          "properties": {
+            "user_id": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "User Id"
+            },
+            "venue_id": {
+              "type": "integer",
+              "title": "Venue Id"
+            },
+            "date": {
+              "type": "string",
+              "format": "date",
+              "title": "Date"
+            },
+            "time_slot": {
+              "type": "string",
+              "title": "Time Slot"
+            },
+            "hours": {
+              "type": "integer",
+              "title": "Hours"
+            }
+          },
+          "type": "object",
+          "required": [
+            "venue_id",
+            "date",
+            "time_slot",
+            "hours"
+          ],
+          "title": "BookingCreate"
+        },
+        "BookingResponse": {
+          "properties": {
+            "id": {
+              "type": "integer",
+              "title": "Id"
+            },
+            "user_id": {
+              "type": "integer",
+              "title": "User Id"
+            },
+            "venue_id": {
+              "type": "integer",
+              "title": "Venue Id"
+            },
+            "date": {
+              "type": "string",
+              "format": "date",
+              "title": "Date"
+            },
+            "time_slot": {
+              "type": "string",
+              "title": "Time Slot"
+            },
+            "hours": {
+              "type": "integer",
+              "title": "Hours"
+            },
+            "status": {
+              "type": "string",
+              "title": "Status"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "user_id",
+            "venue_id",
+            "date",
+            "time_slot",
+            "hours",
+            "status"
+          ],
+          "title": "BookingResponse"
+        },
+        "BookingUpdate": {
+          "properties": {
+            "venue_id": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Venue Id"
+            },
+            "booking_date": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Booking Date"
+            },
+            "time_slot": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Time Slot"
+            },
+            "hours": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Hours"
+            }
+          },
+          "type": "object",
+          "title": "BookingUpdate"
+        },
+        "EmbeddedVenueHours": {
+          "properties": {
+            "open_time": {
+              "type": "string",
+              "format": "time",
+              "title": "Open Time"
+            },
+            "close_time": {
+              "type": "string",
+              "format": "time",
+              "title": "Close Time"
+            },
+            "blackout_days": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Blackout Days"
+            }
+          },
+          "type": "object",
+          "required": [
+            "open_time",
+            "close_time"
+          ],
+          "title": "EmbeddedVenueHours"
+        },
+        "HTTPValidationError": {
+          "properties": {
+            "detail": {
+              "items": {
+                "$ref": "#/components/schemas/ValidationError"
+              },
+              "type": "array",
+              "title": "Detail"
+            }
+          },
+          "type": "object",
+          "title": "HTTPValidationError"
+        },
+        "Token": {
+          "properties": {
+            "access_token": {
+              "type": "string",
+              "title": "Access Token"
+            },
+            "token_type": {
+              "type": "string",
+              "title": "Token Type"
+            }
+          },
+          "type": "object",
+          "required": [
+            "access_token",
+            "token_type"
+          ],
+          "title": "Token"
+        },
+        "UserCreate": {
+          "properties": {
+            "user_role": {
+              "type": "integer",
+              "title": "User Role"
+            },
+            "username": {
+              "type": "string",
+              "title": "Username"
+            },
+            "first_name": {
+              "type": "string",
+              "title": "First Name"
+            },
+            "last_name": {
+              "type": "string",
+              "title": "Last Name"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "title": "Email"
+            },
+            "password": {
+              "type": "string",
+              "title": "Password"
+            },
+            "phone_number": {
+              "type": "string",
+              "title": "Phone Number"
+            }
+          },
+          "type": "object",
+          "required": [
+            "user_role",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password",
+            "phone_number"
+          ],
+          "title": "UserCreate"
+        },
+        "UserResponse": {
+          "properties": {
+            "id": {
+              "type": "integer",
+              "title": "Id"
+            },
+            "username": {
+              "type": "string",
+              "title": "Username"
+            },
+            "first_name": {
+              "type": "string",
+              "title": "First Name"
+            },
+            "last_name": {
+              "type": "string",
+              "title": "Last Name"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "title": "Email"
+            },
+            "phone_number": {
+              "type": "string",
+              "title": "Phone Number"
+            },
+            "created_at": {
+              "type": "string",
+              "format": "date-time",
+              "title": "Created At"
+            },
+            "deleted": {
+              "type": "boolean",
+              "title": "Deleted"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "phone_number",
+            "created_at",
+            "deleted"
+          ],
+          "title": "UserResponse"
+        },
+        "UserUpdate": {
+          "properties": {
+            "first_name": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "First Name"
+            },
+            "last_name": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Last Name"
+            },
+            "phone_number": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Phone Number"
+            }
+          },
+          "type": "object",
+          "title": "UserUpdate"
+        },
+        "ValidationError": {
+          "properties": {
+            "loc": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "type": "array",
+              "title": "Location"
+            },
+            "msg": {
+              "type": "string",
+              "title": "Message"
+            },
+            "type": {
+              "type": "string",
+              "title": "Error Type"
+            }
+          },
+          "type": "object",
+          "required": [
+            "loc",
+            "msg",
+            "type"
+          ],
+          "title": "ValidationError"
+        },
+        "VenueCreate": {
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "venue_id": {
+              "type": "integer",
+              "title": "Venue Id"
+            },
+            "location": {
+              "type": "string",
+              "title": "Location"
+            },
+            "capacity": {
+              "type": "integer",
+              "title": "Capacity"
+            },
+            "event_type": {
+              "type": "string",
+              "title": "Event Type"
+            },
+            "image": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Image"
+            },
+            "availability": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Availability",
+              "default": true
+            },
+            "hourly_rate": {
+              "type": "number",
+              "title": "Hourly Rate"
+            },
+            "contact_info": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Contact Info"
+            },
+            "venue_hours": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/EmbeddedVenueHours"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Venue Hours"
+            }
+          },
+          "type": "object",
+          "required": [
+            "name",
+            "venue_id",
+            "location",
+            "capacity",
+            "event_type",
+            "hourly_rate"
+          ],
+          "title": "VenueCreate"
+        },
+        "VenueHoursResponse": {
+          "properties": {
+            "id": {
+              "type": "integer",
+              "title": "Id"
+            },
+            "venue_id": {
+              "type": "integer",
+              "title": "Venue Id"
+            },
+            "open_time": {
+              "type": "string",
+              "format": "time",
+              "title": "Open Time"
+            },
+            "close_time": {
+              "type": "string",
+              "format": "time",
+              "title": "Close Time"
+            },
+            "last_updated": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Last Updated"
+            },
+            "blackout_days": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Blackout Days"
+            },
+            "deleted": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Deleted",
+              "default": false
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "venue_id",
+            "open_time",
+            "close_time",
+            "last_updated"
+          ],
+          "title": "VenueHoursResponse"
+        },
+        "VenueHoursUpdate": {
+          "properties": {
+            "open_time": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Open Time"
+            },
+            "close_time": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Close Time"
+            },
+            "blackout_days": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Blackout Days"
+            }
+          },
+          "type": "object",
+          "title": "VenueHoursUpdate"
+        },
+        "VenueOwnerCreate": {
+          "properties": {
+            "venue_id": {
+              "type": "integer",
+              "title": "Venue Id"
+            },
+            "user_id": {
+              "type": "integer",
+              "title": "User Id"
+            }
+          },
+          "type": "object",
+          "required": [
+            "venue_id",
+            "user_id"
+          ],
+          "title": "VenueOwnerCreate"
+        },
+        "VenueOwnerResponse": {
+          "properties": {
+            "id": {
+              "type": "integer",
+              "title": "Id"
+            },
+            "user_id": {
+              "type": "integer",
+              "title": "User Id"
+            },
+            "venue_id": {
+              "type": "integer",
+              "title": "Venue Id"
+            },
+            "created_at": {
+              "type": "string",
+              "format": "date-time",
+              "title": "Created At"
+            },
+            "deleted": {
+              "type": "boolean",
+              "title": "Deleted"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "user_id",
+            "venue_id",
+            "created_at",
+            "deleted"
+          ],
+          "title": "VenueOwnerResponse"
+        },
+        "VenueOwnerUpdate": {
+          "properties": {
+            "venue_id": {
+              "type": "integer",
+              "title": "Venue Id"
+            },
+            "new_user_id": {
+              "type": "integer",
+              "title": "New User Id"
+            },
+            "deleted": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Deleted"
+            }
+          },
+          "type": "object",
+          "required": [
+            "venue_id",
+            "new_user_id"
+          ],
+          "title": "VenueOwnerUpdate"
+        },
+        "VenueResponse": {
+          "properties": {
+            "id": {
+              "type": "integer",
+              "title": "Id"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "location": {
+              "type": "string",
+              "title": "Location"
+            },
+            "event_type": {
+              "type": "string",
+              "title": "Event Type"
+            },
+            "availability": {
+              "type": "boolean",
+              "title": "Availability"
+            },
+            "hourly_rate": {
+              "type": "number",
+              "title": "Hourly Rate"
+            },
+            "deleted": {
+              "type": "boolean",
+              "title": "Deleted"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "location",
+            "event_type",
+            "availability",
+            "hourly_rate",
+            "deleted"
+          ],
+          "title": "VenueResponse"
+        },
+        "VenueUpdate": {
+          "properties": {
+            "name": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            },
+            "location": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Location"
+            },
+            "event_type": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Event Type"
+            },
+            "availability": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Availability"
+            },
+            "hourly_rate": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Hourly Rate"
+            },
+            "venue_hours": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/VenueHoursUpdate"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "title": "VenueUpdate"
+        }
+      },
+      "securitySchemes": {
+        "OAuth2PasswordBearer": {
+          "type": "oauth2",
+          "flows": {
+            "password": {
+              "scopes": {
+  
+              },
+              "tokenUrl": "auth/token"
+            }
+          }
+        }
+      }
+    }
+  }

@@ -5,81 +5,86 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Star, Users, Search, User } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { components } from "@/types/api";
 
-const mockVenues = [
-  {
-    id: 1,
-    name: "Sunset Arena",
-    description: "A spacious venue ideal for concerts and sports.",
-    rating: 4.8,
-    capacity: 5000,
-    location: "San Diego",
-    eventType: "Concert",
-    imageUrl: "https://via.placeholder.com/400x200?text=Sunset+Arena",
-  },
-  {
-    id: 2,
-    name: "Lakeside Hall",
-    description: "Perfect for weddings and large corporate events.",
-    rating: 4.5,
-    capacity: 800,
-    location: "Austin",
-    eventType: "Wedding",
-    imageUrl: "https://via.placeholder.com/400x200?text=Lakeside+Hall",
-  },
-  {
-    id: 3,
-    name: "Downtown Studio",
-    description: "An intimate space for workshops and meetups.",
-    rating: 4.2,
-    capacity: 150,
-    location: "New York",
-    eventType: "Workshop",
-    imageUrl: "https://via.placeholder.com/400x200?text=Downtown+Studio",
-  },
-  {
-    id: 4,
-    name: "Viejas Arena",
-    description: "A spacious venue ideal for concerts and sports.",
-    rating: 4.8,
-    capacity: 10000,
-    location: "San Diego",
-    eventType: "Concert",
-    imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.sdnews.com%2Fwp-content%2Fuploads%2F20240426071905%2Fsdsu-viejas-pic-1-lmc-.jpg&f=1&nofb=1&ipt=7b3c44e32b7d024dd732881ac330babca75c24b6f38de77dffaabee88005c53c",
-  },
-  {
-    id: 5,
-    name: "Grand Pavilion",
-    description: "Modern architecture with multi-purpose use.",
-    rating: 4.7,
-    capacity: 1200,
-    location: "Chicago",
-    eventType: "Conference",
-    imageUrl: "https://via.placeholder.com/400x200?text=Grand+Pavilion",
-  },
-  {
-    id: 6,
-    name: "Harbor Conference Center",
-    description: "Ideal for business events and networking.",
-    rating: 4.4,
-    capacity: 600,
-    location: "Austin",
-    eventType: "Conference",
-    imageUrl: "https://via.placeholder.com/400x200?text=Harbor+Conference",
-  },
-  {
-    id: 7,
-    name: "Greenfield Grounds",
-    description: "Open air venue great for festivals and outdoor sports.",
-    rating: 4.6,
-    capacity: 3000,
-    location: "New York",
-    eventType: "Festival",
-    imageUrl: "https://via.placeholder.com/400x200?text=Greenfield+Grounds",
-  },
-];
+type Venue = components["schemas"]["VenueResponse"];
+
+// const mockVenues = [
+//   {
+//     id: 1,
+//     name: "Sunset Arena",
+//     description: "A spacious venue ideal for concerts and sports.",
+//     rating: 4.8,
+//     capacity: 5000,
+//     location: "San Diego",
+//     eventType: "Concert",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Sunset+Arena",
+//   },
+//   {
+//     id: 2,
+//     name: "Lakeside Hall",
+//     description: "Perfect for weddings and large corporate events.",
+//     rating: 4.5,
+//     capacity: 800,
+//     location: "Austin",
+//     eventType: "Wedding",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Lakeside+Hall",
+//   },
+//   {
+//     id: 3,
+//     name: "Downtown Studio",
+//     description: "An intimate space for workshops and meetups.",
+//     rating: 4.2,
+//     capacity: 150,
+//     location: "New York",
+//     eventType: "Workshop",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Downtown+Studio",
+//   },
+//   {
+//     id: 4,
+//     name: "Viejas Arena",
+//     description: "A spacious venue ideal for concerts and sports.",
+//     rating: 4.8,
+//     capacity: 10000,
+//     location: "San Diego",
+//     eventType: "Concert",
+//     imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.sdnews.com%2Fwp-content%2Fuploads%2F20240426071905%2Fsdsu-viejas-pic-1-lmc-.jpg&f=1&nofb=1&ipt=7b3c44e32b7d024dd732881ac330babca75c24b6f38de77dffaabee88005c53c",
+//   },
+//   {
+//     id: 5,
+//     name: "Grand Pavilion",
+//     description: "Modern architecture with multi-purpose use.",
+//     rating: 4.7,
+//     capacity: 1200,
+//     location: "Chicago",
+//     eventType: "Conference",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Grand+Pavilion",
+//   },
+//   {
+//     id: 6,
+//     name: "Harbor Conference Center",
+//     description: "Ideal for business events and networking.",
+//     rating: 4.4,
+//     capacity: 600,
+//     location: "Austin",
+//     eventType: "Conference",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Harbor+Conference",
+//   },
+//   {
+//     id: 7,
+//     name: "Greenfield Grounds",
+//     description: "Open air venue great for festivals and outdoor sports.",
+//     rating: 4.6,
+//     capacity: 3000,
+//     location: "New York",
+//     eventType: "Festival",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Greenfield+Grounds",
+//   },
+// ];
 
 export default function UserDashboard() {
+  
+  const [venues, setVenues] = useState<Venue[]>([]);
   const [filters, setFilters] = useState({
     location: "",
     capacity: "",
@@ -94,16 +99,37 @@ export default function UserDashboard() {
     router.push("/login");
   };
 
-  const filteredVenues = mockVenues.filter((venue) => {
+  useEffect(() => {
+    async function getVenues() {
+      try {
+        const res = await fetch("http://localhost:8000/venue/venues");
+        const data: Venue[] = await res.json();
+        if (Array.isArray(data)) {
+          setVenues(data as Venue[]);
+        } else {
+          console.error("Expected array but got:", data);
+          setVenues([]); // fallback to empty to avoid crash
+        }
+        //setVenues(data);
+      } catch (err) {
+        console.error("Error fetching venues:", err);
+      }
+    }
+
+    getVenues();
+  }, []);
+
+  const filteredVenues = venues.filter((venue) => {
     return (
-      (!filters.location || venue.location.includes(filters.location)) &&
-      (!filters.capacity || venue.capacity >= parseInt(filters.capacity)) &&
-      (!filters.eventType || venue.eventType === filters.eventType) &&
-      (!filters.rating || venue.rating >= parseFloat(filters.rating))
+      (!filters.location || venue.location.toLowerCase().includes(filters.location.toLowerCase()))
+      // (!filters.capacity || venue.capacity >= parseInt(filters.capacity)) &&
+      // (!filters.eventType || venue.eventType === filters.eventType) &&
+      // (!filters.rating || venue.rating >= parseFloat(filters.rating))
     );
   });
 
   return (
+    // Top Header Bar
     <div className="min-h-screen bg-white-100 p-6">
       <nav className="bg-[#003049] shadow px-6 py-4 mb-6 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sticky top-0 z-10">
         <h1 className="text-xl font-bold text-white">EventEz</h1>
@@ -157,7 +183,8 @@ export default function UserDashboard() {
       </nav>
 
       <h1 className="text-3xl font-bold mb-4">Available Venues</h1>
-
+      
+      {/* Filters Bar */}
       <div className="flex flex-wrap gap-4 mb-6 bg-transparent border-none">
         <input
           type="text"
@@ -195,28 +222,29 @@ export default function UserDashboard() {
         />
       </div>
 
+      {/* Venue listings */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredVenues.map((venue) => (
           <div
-            key={venue.id}
+            key={venue.venue_id}
             className="bg-white border rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden"
           >
             <img
-              src={venue.imageUrl}
+              // src={venue.imageUrl}
               alt={venue.name}
               className="w-full h-48 object-cover"
             />
             <div className="p-4">
               <h2 className="text-xl font-bold mb-2">{venue.name}</h2>
-              <p className="text-black mb-2">{venue.description}</p>
+              {/* <p className="text-black mb-2">{venue.description}</p> */}
               <p className="text-sm text-black mb-1 flex items-center gap-1">
-                <Star className="w-4 h-4 text-yellow-500" /> {venue.rating}
+                {/* <Star className="w-4 h-4 text-yellow-500" /> {venue.rating} */}
               </p>
               <p className="text-sm text-black mb-3 flex items-center gap-1">
-                <Users className="w-4 h-4 text-gray-500" /> {venue.capacity}
+                {/* <Users className="w-4 h-4 text-gray-500" /> {venue.capacity} */}
               </p>
               <div className="flex justify-between">
-                <Link href={`/booking/${venue.id}`}>
+                <Link href={`/venues/${venue.venue_id}`}>
                   <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                     Venue Details
                   </button>
