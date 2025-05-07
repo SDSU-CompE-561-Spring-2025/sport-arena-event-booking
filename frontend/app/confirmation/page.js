@@ -5,18 +5,33 @@ import Link from 'next/link';
 
 export default function BookingConfirmation() {
     return (
-        <div style={{ backgroundColor: '#EAE2B7', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Arial' }}>
-            <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '3rem', borderRadius: '12px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
-                <h1 style={{ fontSize: '2rem', color: '#003049', fontWeight: 'bold', marginBottom: '1rem' }}>
-                    Thank you for the confirmation!
-                </h1>
-                <p style={{ fontSize: '1.2rem', color: '#003049', marginBottom: '2rem' }}>
-                    Have great fun! 🎉
-                </p>
+        <div style={{ backgroundColor: '#fff', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Arial' }}>
+            <div style={{ 
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: '#003049',
+                padding: '1rem 2rem',
+                marginBottom: '2rem',
+                borderRadius: '16px',
+                width: '97%',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                }}
+            >
+                <h2 style={{ color: 'white', marginLeft: '1rem', fontSize: '1.875rem' }}>EventEz</h2>
+                <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '3rem', borderRadius: '12px', boxShadow: '0 0 10px rgba(0,0,0,0.1)', marginBottom: '2rem' }}>
+                    <h1 style={{ fontSize: '2rem', color: '#003049', fontWeight: 'bold', marginBottom: '1rem' }}>
+                        Thank you for the confirmation!
+                    </h1>
+                    <p style={{ fontSize: '1.2rem', color: '#003049', marginBottom: '2rem' }}>
+                        Have great fun! 🎉
+                    </p>
 
-                <Link href="/home-page">
-                    <button style={buttonStyle}>Go to Dashboard</button>
-                </Link>
+                    <Link href="/home-page">
+                        <button style={buttonStyle}>Go to Dashboard</button>
+                    </Link>
+                </div>
             </div>
         </div>
     );
