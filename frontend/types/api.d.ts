@@ -636,7 +636,7 @@ export interface components {
         /** VenueResponse */
         VenueResponse: {
             /** Id */
-            id: number;
+            venue_id: number;
             /** Name */
             name: string;
             /** Location */

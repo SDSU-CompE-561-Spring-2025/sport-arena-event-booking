@@ -33,7 +33,7 @@ export default function VenueDetail({ venue }: any) {
         <h1 className="text-3xl font-bold mb-4">{venue.name}</h1>
           <Gallery images={venue.images} />
           <div className="flex items-center gap-4 my-4">
-            <span>⭐ {venue.rating} ({venue.reviews})</span>
+            <span>⭐ {venue.rating != null ? venue.rating : "Not yet rated"}{" "} {venue.reviews != null ? `(${venue.reviews})` : ""} </span>
             <span>👥 {venue.capacity}</span>
             <span>📐 {venue.size} sqft</span>
           </div>

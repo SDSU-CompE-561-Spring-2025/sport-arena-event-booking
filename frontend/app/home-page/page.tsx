@@ -7,96 +7,81 @@ import { components } from "@/types/api";
 
 type Venue = components["schemas"]["VenueResponse"];
 
-const mockVenues = [
-  {
-    id: 1,
-    name: "Sunset Arena",
-    description: "A spacious venue ideal for concerts and sports.",
-    rating: 4.8,
-    capacity: 5000,
-    location: "San Diego",
-    eventType: "Concert",
-    imageUrl: "https://via.placeholder.com/400x200?text=Sunset+Arena",
-  },
-  {
-    id: 2,
-    name: "Lakeside Hall",
-    description: "Perfect for weddings and large corporate events.",
-    rating: 4.5,
-    capacity: 800,
-    location: "Austin",
-    eventType: "Wedding",
-    imageUrl: "https://via.placeholder.com/400x200?text=Lakeside+Hall",
-  },
-  {
-    id: 3,
-    name: "Downtown Studio",
-    description: "An intimate space for workshops and meetups.",
-    rating: 4.2,
-    capacity: 150,
-    location: "New York",
-    eventType: "Workshop",
-    imageUrl: "https://via.placeholder.com/400x200?text=Downtown+Studio",
-  },
-  {
-    id: 4,
-    name: "Viejas Arena",
-    description: "A spacious venue ideal for concerts and sports.",
-    rating: 4.8,
-    capacity: 10000,
-    location: "San Diego",
-    eventType: "Concert",
-    imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.sdnews.com%2Fwp-content%2Fuploads%2F20240426071905%2Fsdsu-viejas-pic-1-lmc-.jpg&f=1&nofb=1&ipt=7b3c44e32b7d024dd732881ac330babca75c24b6f38de77dffaabee88005c53c",
-  },
-  {
-    id: 5,
-    name: "Grand Pavilion",
-    description: "Modern architecture with multi-purpose use.",
-    rating: 4.7,
-    capacity: 1200,
-    location: "Chicago",
-    eventType: "Conference",
-    imageUrl: "https://via.placeholder.com/400x200?text=Grand+Pavilion",
-  },
-  {
-    id: 6,
-    name: "Harbor Conference Center",
-    description: "Ideal for business events and networking.",
-    rating: 4.4,
-    capacity: 600,
-    location: "Austin",
-    eventType: "Conference",
-    imageUrl: "https://via.placeholder.com/400x200?text=Harbor+Conference",
-  },
-  {
-    id: 7,
-    name: "Greenfield Grounds",
-    description: "Open air venue great for festivals and outdoor sports.",
-    rating: 4.6,
-    capacity: 3000,
-    location: "New York",
-    eventType: "Festival",
-    imageUrl: "https://via.placeholder.com/400x200?text=Greenfield+Grounds",
-  },
-];
+// const mockVenues = [
+//   {
+//     id: 1,
+//     name: "Sunset Arena",
+//     description: "A spacious venue ideal for concerts and sports.",
+//     rating: 4.8,
+//     capacity: 5000,
+//     location: "San Diego",
+//     eventType: "Concert",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Sunset+Arena",
+//   },
+//   {
+//     id: 2,
+//     name: "Lakeside Hall",
+//     description: "Perfect for weddings and large corporate events.",
+//     rating: 4.5,
+//     capacity: 800,
+//     location: "Austin",
+//     eventType: "Wedding",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Lakeside+Hall",
+//   },
+//   {
+//     id: 3,
+//     name: "Downtown Studio",
+//     description: "An intimate space for workshops and meetups.",
+//     rating: 4.2,
+//     capacity: 150,
+//     location: "New York",
+//     eventType: "Workshop",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Downtown+Studio",
+//   },
+//   {
+//     id: 4,
+//     name: "Viejas Arena",
+//     description: "A spacious venue ideal for concerts and sports.",
+//     rating: 4.8,
+//     capacity: 10000,
+//     location: "San Diego",
+//     eventType: "Concert",
+//     imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.sdnews.com%2Fwp-content%2Fuploads%2F20240426071905%2Fsdsu-viejas-pic-1-lmc-.jpg&f=1&nofb=1&ipt=7b3c44e32b7d024dd732881ac330babca75c24b6f38de77dffaabee88005c53c",
+//   },
+//   {
+//     id: 5,
+//     name: "Grand Pavilion",
+//     description: "Modern architecture with multi-purpose use.",
+//     rating: 4.7,
+//     capacity: 1200,
+//     location: "Chicago",
+//     eventType: "Conference",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Grand+Pavilion",
+//   },
+//   {
+//     id: 6,
+//     name: "Harbor Conference Center",
+//     description: "Ideal for business events and networking.",
+//     rating: 4.4,
+//     capacity: 600,
+//     location: "Austin",
+//     eventType: "Conference",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Harbor+Conference",
+//   },
+//   {
+//     id: 7,
+//     name: "Greenfield Grounds",
+//     description: "Open air venue great for festivals and outdoor sports.",
+//     rating: 4.6,
+//     capacity: 3000,
+//     location: "New York",
+//     eventType: "Festival",
+//     imageUrl: "https://via.placeholder.com/400x200?text=Greenfield+Grounds",
+//   },
+// ];
 
 export default function UserDashboard() {
-  // const [filters, setFilters] = useState({
-  //   location: "",
-  //   capacity: "",
-  //   eventType: "",
-  //   rating: "",
-  // });
-
-  // const filteredVenues = mockVenues.filter((venue) => {
-  //   return (
-  //     (!filters.location || venue.location.includes(filters.location)) &&
-  //     (!filters.capacity || venue.capacity >= parseInt(filters.capacity)) &&
-  //     (!filters.eventType || venue.eventType === filters.eventType) &&
-  //     (!filters.rating || venue.rating >= parseFloat(filters.rating))
-  //   );
-  // });
-
+  
   const [venues, setVenues] = useState<Venue[]>([]);
   const [filters, setFilters] = useState({
     location: "",
@@ -198,7 +183,7 @@ export default function UserDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredVenues.map((venue) => (
           <div
-            key={venue.id}
+            key={venue.venue_id}
             className="bg-white border rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden"
           >
             <img
