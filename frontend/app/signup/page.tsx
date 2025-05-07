@@ -61,8 +61,14 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white-100 flex items-center justify-center p-4">
-      <div className="rounded-xl w-full max-w-md space-y-4 bg-yellow-100 shadow-xl p-6">
+    <div
+      className="min-h-screen bg-cover bg-center flex items-center justify-center p-4"
+      style={{
+        backgroundImage:
+          "url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.sdnews.com%2Fwp-content%2Fuploads%2F20240426071905%2Fsdsu-viejas-pic-1-lmc-.jpg&f=1&nofb=1&ipt=7b3c44e32b7d024dd732881ac330babca75c24b6f38de77dffaabee88005c53c')",
+      }}
+    >
+      <div className="rounded-xl w-full max-w-md space-y-4 bg-white/90 shadow-xl p-6">
         <h2 className="text-2xl font-bold text-center bg-blue-950 text-white py-2 rounded-md">SIGNUP</h2>
 
         {feedback && (
@@ -109,6 +115,15 @@ export default function SignupPage() {
           <Button type="submit" className="w-full bg-blue-950 text-white hover:bg-blue-800" disabled={loading}>
             {loading ? 'Registering...' : 'SIGNUP'}
           </Button>
+          <div className="text-center mt-4 text-sm">
+            Already have an account?{" "}
+            <button
+              onClick={() => router.push("/login")}
+              className="text-blue-700 font-medium hover:underline"
+            >
+              Log in
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Star, Users, Search, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
@@ -11,9 +12,9 @@ import {
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-// Remove Navbar component import
-
+// Types
 type Booking = {
   id: number;
   venue: string;
@@ -58,7 +59,8 @@ export default function UserProfile() {
   };
 
   const handleLogout = () => {
-    console.log("Logging out...");
+    localStorage.removeItem("token");
+    router.push("/login");
   };
 
   const handleGoHome = () => {
@@ -69,24 +71,46 @@ export default function UserProfile() {
     <div className="min-h-screen bg-white p-6">
       <nav className="bg-[#003049] shadow px-6 py-4 mb-6 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sticky top-0 z-10">
         <h1 className="text-xl font-bold text-white">EventEz</h1>
-        <div className="flex gap-4">
-          <Button 
-            onClick={handleGoHome} 
+        <div className="flex gap-4 items-center">
+          <Button
+            onClick={handleGoHome}
             className="bg-white text-[#003049] px-4 py-2 rounded-full font-semibold hover:bg-gray-100"
           >
             Home Page
           </Button>
-          <Button className="bg-white text-[#003049] font-semibold px-4 py-2 rounded-full hover:bg-gray-100">
-            Update Profile
-          </Button>
+
+          {/* Profile Dropdown */}
+          <DropdownMenu.Root>
+          <DropdownMenu.Trigger asChild>
+              <button className="p-2 rounded-full bg-white hover:bg-gray-100 border">
+                <User className="w-6 h-6 text-[#003049]" />
+              </button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content
+              sideOffset={8}
+              className="bg-white border border-gray-200 rounded-lg shadow-lg p-2 space-y-1 z-50"
+            >
+              <DropdownMenu.Item
+                onSelect={() => router.push("/user-profile")}
+                className="cursor-pointer px-3 py-2 hover:bg-gray-100 rounded-md"
+              >
+                Update Profile
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                onSelect={handleLogout}
+                className="cursor-pointer px-3 py-2 text-red-600 hover:bg-red-50 rounded-md"
+              >
+                Logout
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
         </div>
       </nav>
 
       <h1 className="text-2xl font-bold">User Profile</h1>
 
       <section>
-        <h2 className="text-xl font-semibold"
-        >Current Bookings</h2>
+        <h2 className="text-xl font-semibold">Current Bookings</h2>
         {currentBookings.map(booking => (
           <Card key={booking.id} className="my-2">
             <CardContent>
@@ -117,8 +141,6 @@ export default function UserProfile() {
           </Card>
         ))}
       </section>
-
-      <Button onClick={handleLogout} className="mt-4">Logout</Button>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent>
