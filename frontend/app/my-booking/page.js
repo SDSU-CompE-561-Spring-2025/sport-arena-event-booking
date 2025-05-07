@@ -101,79 +101,81 @@ export default function MyBookingsPage() {
         <div className="p-6">
             <h1 className="text-2xl font-bold mb-4">My Bookings</h1>
 
-            {loading ? (
-                <Spinner />
-            ) : bookings.length === 0 ? (
-                <p>No bookings found.</p>
-            ) : (
-                <ul className="space-y-4">
-                    {bookings.map((booking) => (
-                        <li key={booking.id} className="border p-4 rounded shadow">
-                            <p><strong>Venue:</strong> {venueMap[booking.venue_id] || `ID ${booking.venue_id}`}</p>                            <p><strong>Date:</strong> {booking.date}</p>
-                            <p><strong>Time Slot:</strong> {booking.time_slot}</p>
-                            <p><strong>Hours:</strong> {booking.hours}</p>
-                            <p><strong>Status:</strong> {booking.status}</p>
+            <div style={{ maxWidth: '800px', margin: '0 auto', marginBottom: '2rem' }}>
+                {loading ? (
+                    <Spinner />
+                ) : bookings.length === 0 ? (
+                    <p>No bookings found.</p>
+                ) : (
+                    <ul className="space-y-4">
+                        {bookings.map((booking) => (
+                            <li key={booking.id} className="border p-4 rounded shadow">
+                                <p><strong>Venue:</strong> {venueMap[booking.venue_id] || `ID ${booking.venue_id}`}</p>                            <p><strong>Date:</strong> {booking.date}</p>
+                                <p><strong>Time Slot:</strong> {booking.time_slot}</p>
+                                <p><strong>Hours:</strong> {booking.hours}</p>
+                                <p><strong>Status:</strong> {booking.status}</p>
 
-                            <button
-                                className="mt-2 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mr-2"
-                                onClick={() => {
-                                    setEditingBookingId(booking.id);
-                                    setEditData({
-                                        date: booking.date,
-                                        time_slot: booking.time_slot,
-                                        hours: booking.hours,
-                                    });
-                                }}
-                            >
-                                Edit
-                            </button>
+                                <button
+                                    className="mt-2 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mr-2"
+                                    onClick={() => {
+                                        setEditingBookingId(booking.id);
+                                        setEditData({
+                                            date: booking.date,
+                                            time_slot: booking.time_slot,
+                                            hours: booking.hours,
+                                        });
+                                    }}
+                                >
+                                    Edit
+                                </button>
 
-                            <button
-                                className="mt-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                                onClick={() => handleDelete(booking.id)}
-                            >
-                                Delete
-                            </button>
+                                <button
+                                    className="mt-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                                    onClick={() => handleDelete(booking.id)}
+                                >
+                                    Delete
+                                </button>
 
-                            {editingBookingId === booking.id && (
-                                <div className="mt-4 space-y-2">
-                                    <input
-                                        type="date"
-                                        value={editData.date}
-                                        onChange={(e) => setEditData({ ...editData, date: e.target.value })}
-                                        className="border p-2 rounded w-full"
-                                    />
-                                    <input
-                                        type="time"
-                                        value={editData.time_slot}
-                                        onChange={(e) => setEditData({ ...editData, time_slot: e.target.value })}
-                                        className="border p-2 rounded w-full"
-                                    />
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        max="5"
-                                        value={editData.hours || ''}
-                                        onChange={(e) => {
-                                            const value = parseInt(e.target.value);
-                                            if (!isNaN(value) && value >= 1 && value <= 5) {
-                                                setEditData({ ...editData, hours: value });
-                                            }
-                                        }}
-                                        className="border p-2 rounded w-full"
-                                    />
-                                    <button
-                                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                                        onClick={() => handleUpdate(booking.id)}
-                                    >
-                                        Save Changes
-                                    </button>
-                                </div>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            )}
+                                {editingBookingId === booking.id && (
+                                    <div className="mt-4 space-y-2">
+                                        <input
+                                            type="date"
+                                            value={editData.date}
+                                            onChange={(e) => setEditData({ ...editData, date: e.target.value })}
+                                            className="border p-2 rounded w-full"
+                                        />
+                                        <input
+                                            type="time"
+                                            value={editData.time_slot}
+                                            onChange={(e) => setEditData({ ...editData, time_slot: e.target.value })}
+                                            className="border p-2 rounded w-full"
+                                        />
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            max="5"
+                                            value={editData.hours || ''}
+                                            onChange={(e) => {
+                                                const value = parseInt(e.target.value);
+                                                if (!isNaN(value) && value >= 1 && value <= 5) {
+                                                    setEditData({ ...editData, hours: value });
+                                                }
+                                            }}
+                                            className="border p-2 rounded w-full"
+                                        />
+                                        <button
+                                            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                                            onClick={() => handleUpdate(booking.id)}
+                                        >
+                                            Save Changes
+                                        </button>
+                                    </div>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </div>
     );
 }

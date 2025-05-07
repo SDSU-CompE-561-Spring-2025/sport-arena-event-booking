@@ -69,8 +69,8 @@ export default function SummaryPage() {
     }
 
     return (
-        <div style={{ backgroundColor: '#EAE2B7', minHeight: '100vh', fontFamily: 'Arial', padding: '2rem' }}>
-            <div style={{ maxWidth: '500px', margin: '0 auto', backgroundColor: '#fff', borderRadius: '10px', padding: '2rem' }}>
+        <div style={{ backgroundColor: '#fff', minHeight: '100vh', fontFamily: 'Arial', padding: '2rem' }}>
+            <div style={{ maxWidth: '500px', margin: '0 auto', backgroundColor: '#fff', borderRadius: '10px', padding: '2rem', marginBottom: '2rem' }}>
                 <h2 style={{ textAlign: 'center', color: '#003049', fontSize: '1.75rem', fontWeight: 'bold' }}>
                     Booking Summary
                 </h2>
