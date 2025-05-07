@@ -118,6 +118,11 @@ export default function UserDashboard() {
         </div>
 
         <div className="flex items-center gap-4">
+          <Link href="/my-booking" className="text-blue-600 hover:underline">
+            <button className="bg-white border-[#F77F00] text-[#003049] px-4 py-2 rounded-full font-semibold hover:opacity-90">
+              My Bookings
+            </button>
+          </Link>
           <Link href="/user-dashboard" className="text-blue-600 hover:underline">
             <button className="bg-white border-[#F77F00] text-[#003049] px-4 py-2 rounded-full font-semibold hover:opacity-90">
               My Dashboard
