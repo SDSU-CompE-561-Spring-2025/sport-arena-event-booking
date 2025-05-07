@@ -32,9 +32,13 @@ def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
 def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     return login_user_service(form_data, db)
 
-@router.put("/update/{user_id}", response_model=UserResponse)
-def update_user(user_id: int, update_data: UserUpdate, db: Session = Depends(get_db)):
-    return update_user_service(user_id, update_data, db)
+@router.put("/update/me", response_model=UserResponse)
+def update_my_profile(
+    update_data: UserUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return update_user_service(current_user.id, update_data, db)
 
 @router.delete("/delete/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
