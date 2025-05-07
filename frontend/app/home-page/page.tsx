@@ -211,15 +211,11 @@ export default function UserDashboard() {
                 <Users className="w-4 h-4 text-gray-500" /> {venue.capacity}
               </p>
               <div className="flex justify-between">
-                <button
-                  onClick={() => {
-                    localStorage.setItem('selectedVenueId', venue.id.toString());
-                    window.location.href = '/booking';
-                  }}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                  Book Venue
-                </button>
+                <Link href={`/booking/${venue.id}`}>
+                  <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Venue Details
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
