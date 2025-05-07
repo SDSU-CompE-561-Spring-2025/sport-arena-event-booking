@@ -37,7 +37,7 @@ export default function LoginPage() {
     setLoading(false);
 
     if (res.ok) {
-      localStorage.setItem("token", data.access_token);
+      localStorage.setItem("access_token", data.access_token);
       router.push("/home-page");
     } else {
       const errorDetail = Array.isArray(data.detail)

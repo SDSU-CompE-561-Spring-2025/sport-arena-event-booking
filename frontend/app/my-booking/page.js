@@ -36,23 +36,25 @@ export default function MyBookingsPage() {
 
     useEffect(() => {
         const fetchBookings = async () => {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                console.error("Token missing");
+                return;
+            }
             try {
-                const token = localStorage.getItem('access_token');
                 const response = await axios.get('http://localhost:8000/bookings/', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    headers: { Authorization: `Bearer ${token}` },
                 });
                 setBookings(response.data);
             } catch (error) {
-                console.error('Failed to fetch bookings:', error);
+                console.error("Error fetching bookings:", error.response?.data || error.message);
             } finally {
                 setLoading(false);
             }
         };
-
         fetchBookings();
     }, []);
+    
 
     async function handleDelete(bookingId) {
         const confirmDelete = window.confirm('Are you sure you want to delete this booking?');
