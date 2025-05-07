@@ -132,7 +132,7 @@ export default function UserDashboard() {
     // Top Header Bar
     <div className="min-h-screen bg-white-100 p-6">
       <nav className="bg-[#003049] shadow px-6 py-4 mb-6 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sticky top-0 z-10">
-        <h1 className="text-xl font-bold text-white">EventEz</h1>
+        <h1 className="text-3xl font-bold text-white">EventEz</h1>
 
         <div className="w-full sm:w-1/3 flex items-center border border-white rounded px-2">
           <Search className="text-white w-4 h-4 mr-2" />
@@ -166,7 +166,7 @@ export default function UserDashboard() {
               className="bg-white border border-gray-200 rounded-lg shadow-lg p-2 space-y-1 z-50"
             >
               <DropdownMenu.Item
-                onSelect={() => router.push("/user-profile")}
+                onSelect={() => router.push("/update-user")}
                 className="cursor-pointer px-3 py-2 hover:bg-gray-100 rounded-md"
               >
                 Update Profile
@@ -182,7 +182,7 @@ export default function UserDashboard() {
         </div>
       </nav>
 
-      <h1 className="text-3xl font-bold mb-4">Available Venues</h1>
+      <h1 className="text-2xl font-bold mb-4">Available Venues</h1>
       
       {/* Filters Bar */}
       <div className="flex flex-wrap gap-4 mb-6 bg-transparent border-none">
