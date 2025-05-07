@@ -11,6 +11,17 @@ def get_venues_service(db: Session) -> List[Venue]:
     venues = db.query(Venue).filter(Venue.deleted == False).all()
     return venues
 
+def get_venue_by_venue_id_service(venue_id: int, db: Session) -> Venue:
+    this_venue = db.query(Venue).filter(
+        Venue.venue_id == venue_id,
+        Venue.deleted == False
+    ).first()
+
+    if not this_venue:
+        raise HTTPException(status_code=404, detail=f"No venue with venue_id = {venue_id} found.")
+    
+    return this_venue
+
 def get_venue_hours_by_venue_id_service(venue_id: int, db: Session) -> List[VenueHours]:
     venue_hours = db.query(VenueHours).filter(
         VenueHours.venue_id == venue_id,

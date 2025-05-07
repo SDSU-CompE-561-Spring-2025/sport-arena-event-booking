@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Star, Users, Search } from "lucide-react";
+import { components } from "@/types/api";
+
+type Venue = components["schemas"]["VenueResponse"];
 
 const mockVenues = [
   {
@@ -78,6 +81,23 @@ const mockVenues = [
 ];
 
 export default function UserDashboard() {
+  // const [filters, setFilters] = useState({
+  //   location: "",
+  //   capacity: "",
+  //   eventType: "",
+  //   rating: "",
+  // });
+
+  // const filteredVenues = mockVenues.filter((venue) => {
+  //   return (
+  //     (!filters.location || venue.location.includes(filters.location)) &&
+  //     (!filters.capacity || venue.capacity >= parseInt(filters.capacity)) &&
+  //     (!filters.eventType || venue.eventType === filters.eventType) &&
+  //     (!filters.rating || venue.rating >= parseFloat(filters.rating))
+  //   );
+  // });
+
+  const [venues, setVenues] = useState<Venue[]>([]);
   const [filters, setFilters] = useState({
     location: "",
     capacity: "",
@@ -85,16 +105,37 @@ export default function UserDashboard() {
     rating: "",
   });
 
-  const filteredVenues = mockVenues.filter((venue) => {
+  useEffect(() => {
+    async function getVenues() {
+      try {
+        const res = await fetch("http://localhost:8000/venue/venues");
+        const data: Venue[] = await res.json();
+        if (Array.isArray(data)) {
+          setVenues(data as Venue[]);
+        } else {
+          console.error("Expected array but got:", data);
+          setVenues([]); // fallback to empty to avoid crash
+        }
+        //setVenues(data);
+      } catch (err) {
+        console.error("Error fetching venues:", err);
+      }
+    }
+
+    getVenues();
+  }, []);
+
+  const filteredVenues = venues.filter((venue) => {
     return (
-      (!filters.location || venue.location.includes(filters.location)) &&
-      (!filters.capacity || venue.capacity >= parseInt(filters.capacity)) &&
-      (!filters.eventType || venue.eventType === filters.eventType) &&
-      (!filters.rating || venue.rating >= parseFloat(filters.rating))
+      (!filters.location || venue.location.toLowerCase().includes(filters.location.toLowerCase()))
+      // (!filters.capacity || venue.capacity >= parseInt(filters.capacity)) &&
+      // (!filters.eventType || venue.eventType === filters.eventType) &&
+      // (!filters.rating || venue.rating >= parseFloat(filters.rating))
     );
   });
 
   return (
+    // Top Header Bar
     <div className="min-h-screen bg-yellow-100 p-6">
       <nav className="bg-[#003049] shadow px-6 py-4 mb-6 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sticky top-0 z-10">
         <h1 className="text-xl font-bold text-white">EventEz</h1>
@@ -114,7 +155,8 @@ export default function UserDashboard() {
       </nav>
 
       <h1 className="text-3xl font-bold mb-4">Available Venues</h1>
-
+      
+      {/* Filters Bar */}
       <div className="flex flex-wrap gap-4 mb-6 bg-transparent border-none">
         <input
           type="text"
@@ -152,6 +194,7 @@ export default function UserDashboard() {
         />
       </div>
 
+      {/* Venue listings */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredVenues.map((venue) => (
           <div
@@ -159,21 +202,21 @@ export default function UserDashboard() {
             className="bg-white border rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden"
           >
             <img
-              src={venue.imageUrl}
+              // src={venue.imageUrl}
               alt={venue.name}
               className="w-full h-48 object-cover"
             />
             <div className="p-4">
               <h2 className="text-xl font-bold mb-2">{venue.name}</h2>
-              <p className="text-black mb-2">{venue.description}</p>
+              {/* <p className="text-black mb-2">{venue.description}</p> */}
               <p className="text-sm text-black mb-1 flex items-center gap-1">
-                <Star className="w-4 h-4 text-yellow-500" /> {venue.rating}
+                {/* <Star className="w-4 h-4 text-yellow-500" /> {venue.rating} */}
               </p>
               <p className="text-sm text-black mb-3 flex items-center gap-1">
-                <Users className="w-4 h-4 text-gray-500" /> {venue.capacity}
+                {/* <Users className="w-4 h-4 text-gray-500" /> {venue.capacity} */}
               </p>
               <div className="flex justify-between">
-                <Link href={`/booking/${venue.id}`}>
+                <Link href={`/venues/${venue.venue_id}`}>
                   <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                     Venue Details
                   </button>

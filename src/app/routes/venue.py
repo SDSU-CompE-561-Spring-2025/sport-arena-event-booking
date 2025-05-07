@@ -15,6 +15,10 @@ router = APIRouter()
 def get_venues(db: Session = Depends(get_db)):
     return get_venues_service(db)
 
+@router.get("/venues/{venue_id}", response_model=VenueResponse)
+def get_venue(venue_id: int, db: Session = Depends(get_db)):
+    return get_venue_by_venue_id_service(venue_id, db)
+
 @router.get("/venue_hours/{venue_id}", response_model=List[VenueHoursResponse])
 def get_venue_hours(venue_id: int, db: Session = Depends(get_db)):
     return get_venue_hours_by_venue_id_service(venue_id, db)
