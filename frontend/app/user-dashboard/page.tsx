@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Star, Users, Search, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { components } from "@/types/api";
 import {
   Dialog,
   DialogContent,
@@ -14,15 +15,17 @@ import {
 } from "@/components/ui/dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-// Types
-type Booking = {
-  id: number;
-  venue: string;
-  date: string;
-  location?: string;
-  time?: string;
-  guests?: number;
-};
+// // Types
+// type Booking = {
+//   id: number;
+//   venue: string;
+//   date: string;
+//   location?: string;
+//   time?: string;
+//   guests?: number;
+// };
+
+type Booking = components["schemas"]["BookingResponse"];
 
 export default function UserProfile() {
   const [previousBookings, setPreviousBookings] = useState<Booking[]>([]);
@@ -35,15 +38,128 @@ export default function UserProfile() {
     fetchBookings();
   }, []);
 
+  // const fetchBookings = async () => {
+  //   setPreviousBookings([
+  //     { id: 1, venue: "Venue A", date: "2025-04-01", location: "New York", time: "6:00 PM", guests: 50 },
+  //     { id: 2, venue: "Venue B", date: "2025-03-15", location: "Chicago", time: "3:00 PM", guests: 30 },
+  //   ]);
+  //   setCurrentBookings([
+  //     { id: 3, venue: "Venue C", date: "2025-05-10", location: "Los Angeles", time: "5:30 PM", guests: 100 },
+  //   ]);
+  // };
+
+  // const fetchBookings = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     alert(`token: ${localStorage.getItem("token")}`);
+  //     const res = await fetch("http://localhost:8000/bookings/all", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  
+  //     if (!res.ok) {
+  //       throw new Error("Failed to fetch bookings");
+  //     }
+  
+  //     const data: Booking[] = await res.json();
+  
+  //     // Example logic: separate bookings into current & previous
+  //     const today = new Date();
+  //     const upcoming = data.filter(b => new Date(b.date) >= today);
+  //     const past = data.filter(b => new Date(b.date) < today);
+  
+  //     setCurrentBookings(upcoming);
+  //     setPreviousBookings(past);
+  //   } catch (err) {
+  //     console.error("Error fetching bookings:", err);
+  //   }
+  // };
+
   const fetchBookings = async () => {
-    setPreviousBookings([
-      { id: 1, venue: "Venue A", date: "2025-04-01", location: "New York", time: "6:00 PM", guests: 50 },
-      { id: 2, venue: "Venue B", date: "2025-03-15", location: "Chicago", time: "3:00 PM", guests: 30 },
-    ]);
-    setCurrentBookings([
-      { id: 3, venue: "Venue C", date: "2025-05-10", location: "Los Angeles", time: "5:30 PM", guests: 100 },
-    ]);
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("No token found. Please log in.");
+        return;
+      }
+  
+      const res = await fetch("http://localhost:8000/bookings/all", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!res.ok) {
+        throw new Error("Failed to fetch bookings");
+      }
+  
+      const data: Booking[] = await res.json();
+  
+      // Separate bookings into upcoming and past
+      const today = new Date();
+      const upcoming = data.filter((b) => new Date(b.date) >= today);
+      const past = data.filter((b) => new Date(b.date) < today);
+  
+      setCurrentBookings(upcoming);
+      setPreviousBookings(past);
+  
+      // 🔍 Extract unique venue IDs and fetch names
+      const uniqueVenueIds = Array.from(new Set(data.map((b) => b.venue_id)));
+      await fetchVenuesById(uniqueVenueIds);
+  
+    } catch (err) {
+      console.error("Error fetching bookings:", err);
+    }
   };
+  
+
+  const [venueMap, setVenueMap] = useState<Record<number, string>>({});
+
+  // const fetchVenuesById = async (venueIds: number[]) => {
+  //   const names: Record<number, string> = {};
+  
+  //   await Promise.all(
+  //     venueIds.map(async (id) => {
+  //       try {
+  //         const res = await fetch(`http://localhost:8000/venue/venues/${id}`);
+  //         if (res.ok) {
+  //           const venue = await res.json();
+  //           names[id] = venue.name;
+  //         } else {
+  //           names[id] = `Venue #${id}`;
+  //         }
+  //       } catch {
+  //         names[id] = `Venue #${id}`;
+  //       }
+  //     })
+  //   );
+  
+  //   setVenueMap(names);
+  // };
+
+  const fetchVenuesById = async (venueIds: number[]) => {
+    const names: Record<number, string> = {};
+  
+    await Promise.all(
+      venueIds.map(async (id) => {
+        try {
+          const res = await fetch(`http://localhost:8000/venue/venues/${id}`);
+          if (res.ok) {
+            const venue = await res.json();
+            names[id] = venue.name;
+          } else {
+            names[id] = `Venue #${id}`;
+          }
+        } catch {
+          names[id] = `Venue #${id}`;
+        }
+      })
+    );
+  
+    setVenueMap(names);
+  };
+  
 
   const handleCancelClick = (booking: Booking) => {
     setBookingToCancel(booking);
@@ -116,7 +232,8 @@ export default function UserProfile() {
             <CardContent>
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="font-semibold">{booking.venue}</p>
+                  <p className="font-semibold">{booking.event_name}</p>
+                  <p className="font-semibold">{venueMap[booking.venue_id] || `Venue #${booking.venue_id}`}</p>
                   <p>{booking.date} at {booking.time}</p>
                   <p>{booking.location}</p>
                   <p>{booking.guests} guests</p>

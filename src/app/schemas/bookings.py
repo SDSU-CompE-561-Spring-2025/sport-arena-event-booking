@@ -6,6 +6,7 @@ from typing import Optional
 class BookingCreate(BaseModel):
    user_id: Optional[int] = None
    venue_id: int
+   event_name: str
    date: date
    time_slot: str
    hours: int
@@ -22,6 +23,7 @@ class BookingResponse(BaseModel):
    id: int
    user_id: int
    venue_id: int
+   event_name: str
    date: date
    time_slot: str
    hours: int

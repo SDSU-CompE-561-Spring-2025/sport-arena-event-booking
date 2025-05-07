@@ -2,9 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 
 export default function SummaryPage() {
+    const searchParams = useSearchParams();
+    const venueIdFromUrl = searchParams.get('venue_id');
+
     const [bookingData, setBookingData] = useState(null);
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -29,18 +33,23 @@ export default function SummaryPage() {
         }
 
         try {
-            const token = localStorage.getItem('access_token');
+            const token = localStorage.getItem('token')
             if (!token) {
-                alert('Please login to confirm booking');
+                alert(`Please login to confirm booking`);
                 return;
             }
 
             const payload = {
-                venue_id: 123, // Replace later with dynamic ID
+                venue_id: bookingData.venueId,
+                event_name: bookingData.eventName,
                 date: bookingData.date,
                 time_slot: bookingData.time,
                 hours: bookingData.hours,
             };
+
+            // alert(`venue_id: ${bookingData.venueId}`);
+
+            alert(`Payload being sent:\n${JSON.stringify(payload, null, 2)}`);
 
             const response = await axios.post('http://localhost:8000/bookings/', payload, {
                 headers: {

@@ -3,14 +3,20 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
 export default function BookingPage() {
+    const searchParams = useSearchParams();
+    const venueIdFromUrl = searchParams.get('venue_id');
+
     const [eventName, setEventName] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [hours, setHours] = useState(1);
     const [message, setMessage] = useState('');
-    const [venueId, setVenueId] = useState('');
+    //const [venueId, setVenueId] = useState('');
+    const [venueId, setVenueId] = useState(venueIdFromUrl || '');
+
 
     const today = new Date().toISOString().split('T')[0];
     const maxDate = new Date();
@@ -24,10 +30,11 @@ export default function BookingPage() {
             time,
             hours,
             message,
-            venueId: 2025,
+            venueId,
         };
         localStorage.setItem('bookingDetails', JSON.stringify(bookingDetails));
-        window.location.href = '/summary';
+        //window.location.href = `/summary?venue_id=${venueId}`;
+        window.location.href = `/summary`;
     };
 
     return (
@@ -84,7 +91,7 @@ export default function BookingPage() {
                     placeholder="Number of hours"
                 /><br />
 
-                <label style={labelStyle}>Message to Venue Manager (optional):</label>
+                <label style={labelStyle}>Message to Venue Manager:</label>
                 <textarea style={{ ...inputStyle, height: '80px' }} value={message} onChange={(e) => setMessage(e.target.value)} /><br />
 
                 <button
