@@ -6,35 +6,24 @@ from app.dependencies import get_db
 from app.core.auth import get_current_user
 from app.models.user import User
 
-
 router = APIRouter(prefix="", tags=["bookings"])
-
 
 @router.post("/", response_model=BookingResponse)
 def create_booking(
     booking_data: BookingCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
 ):
-    return booking_service.create_booking(db, booking_data, user_id=current_user.id)
+    return booking_service.create_booking(db, booking_data, user_id=None)
 
 
 @router.get("/", response_model=list[BookingResponse])
-def get_my_bookings(
-   db: Session = Depends(get_db),
-   current_user: User = Depends(get_current_user)
-):
-   return booking_service.get_user_bookings(db, current_user.id)
+def get_all_bookings(db: Session = Depends(get_db)):
+    return booking_service.get_all_bookings(db)
 
 
-@router.get("/all", response_model=list[BookingResponse])
-def get_all_bookings(
-   db: Session = Depends(get_db),
-   current_user: User = Depends(get_current_user)
-):
-   # if current_user.role != "main_admin":
-   #     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized")
-   return booking_service.get_all_bookings(db)
+# @router.get("/all", response_model=list[BookingResponse])
+# def get_all_bookings(db: Session = Depends(get_db)):
+#     return booking_service.get_all_bookings(db)
 
 
 @router.delete("/{booking_id}")

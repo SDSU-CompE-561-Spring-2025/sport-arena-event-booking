@@ -2,16 +2,19 @@ from sqlalchemy.orm import Session
 from app.models.bookings import Booking
 from app.schemas.bookings import BookingCreate, BookingUpdate, BookingResponse
 from typing import List
+from fastapi import HTTPException
+from typing import Optional
 
-def create_booking(db: Session, booking_data: BookingCreate, user_id:int) -> Booking:
-   data = booking_data.dict()
-   data['user_id'] = user_id
-   new_booking = Booking(**data)
-   print("random")
-   db.add(new_booking)
-   db.commit()
-   db.refresh(new_booking)
-   return new_booking
+
+def create_booking(db: Session, booking_data: BookingCreate, user_id: Optional[int] = None) -> Booking:
+    print("Incoming booking:", booking_data)
+    data = booking_data.dict()
+    data['user_id'] = user_id  # This will be None if unauthenticated
+    new_booking = Booking(**data)
+    db.add(new_booking)
+    db.commit()
+    db.refresh(new_booking)
+    return new_booking
 
 def get_user_bookings(db: Session, user_id: int) -> List[Booking]:
    return db.query(Booking).filter(Booking.user_id == user_id).all()
