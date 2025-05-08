@@ -30,3 +30,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+#Root route 
+@app.get("/") 
+def read_root(): 
+    return {"message": "Welcome to the Sport Arena Event Booking API!"}
