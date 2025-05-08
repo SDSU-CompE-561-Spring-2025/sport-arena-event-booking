@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Star, Users, Search, User } from "lucide-react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { Star, Users } from "lucide-react";
 import { components } from "@/types/api";
 
 type Venue = components["schemas"]["VenueResponse"];
@@ -83,7 +82,6 @@ type Venue = components["schemas"]["VenueResponse"];
 // ];
 
 export default function UserDashboard() {
-  
   const [venues, setVenues] = useState<Venue[]>([]);
   const [filters, setFilters] = useState({
     location: "",
@@ -93,11 +91,6 @@ export default function UserDashboard() {
   });
 
   const router = useRouter();
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    router.push("/login");
-  };
 
   useEffect(() => {
     async function getVenues() {
@@ -110,7 +103,6 @@ export default function UserDashboard() {
           console.error("Expected array but got:", data);
           setVenues([]); // fallback to empty to avoid crash
         }
-        //setVenues(data);
       } catch (err) {
         console.error("Error fetching venues:", err);
       }
@@ -129,59 +121,7 @@ export default function UserDashboard() {
   });
 
   return (
-    // Top Header Bar
     <div className="min-h-screen bg-white-100 p-6">
-      <nav className="bg-[#003049] shadow px-6 py-4 mb-6 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sticky top-0 z-10">
-        <h1 className="text-3xl font-bold text-white">EventEz</h1>
-
-        <div className="w-full sm:w-1/3 flex items-center border border-white rounded px-2">
-          <Search className="text-white w-4 h-4 mr-2" />
-          <input
-            type="text"
-            placeholder="Search venues..."
-            className="flex-grow bg-transparent text-white placeholder-white focus:outline-none py-2"
-          />
-        </div>
-
-        <div className="flex items-center gap-4">
-          <Link href="/my-booking" className="text-blue-600 hover:underline">
-            <button className="bg-white border-[#F77F00] text-[#003049] px-4 py-2 rounded-full font-semibold hover:opacity-90">
-              My Bookings
-            </button>
-          </Link>
-          <Link href="/user-dashboard" className="text-blue-600 hover:underline">
-            <button className="bg-white border-[#F77F00] text-[#003049] px-4 py-2 rounded-full font-semibold hover:opacity-90">
-              My Dashboard
-            </button>
-          </Link>
-
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <button className="bg-white text-[#003049] p-2 rounded-full hover:bg-gray-100 flex items-center">
-                <User className="w-5 h-5" />
-              </button>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content
-              sideOffset={8}
-              className="bg-white border border-gray-200 rounded-lg shadow-lg p-2 space-y-1 z-50"
-            >
-              <DropdownMenu.Item
-                onSelect={() => router.push("/update-user")}
-                className="cursor-pointer px-3 py-2 hover:bg-gray-100 rounded-md"
-              >
-                Update Profile
-              </DropdownMenu.Item>
-              <DropdownMenu.Item
-                onSelect={handleLogout}
-                className="cursor-pointer px-3 py-2 text-red-600 hover:bg-red-50 rounded-md"
-              >
-                Logout
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
-        </div>
-      </nav>
-
       <h1 className="text-2xl font-bold mb-4">Available Venues</h1>
       
       {/* Filters Bar */}
@@ -201,7 +141,7 @@ export default function UserDashboard() {
           onChange={(e) => setFilters({ ...filters, capacity: e.target.value })}
         />
         <select
-          className="border border-[#003049] text-[#003049]  p-2 rounded"
+          className="border border-[#003049] text-[#003049] p-2 rounded"
           value={filters.eventType}
           onChange={(e) => setFilters({ ...filters, eventType: e.target.value })}
         >

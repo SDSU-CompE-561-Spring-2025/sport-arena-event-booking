@@ -20,6 +20,9 @@ RUN pip install --upgrade pip && \
 RUN rm -rf pyproject.toml
 RUN rm -rf poetry.lock
 
+COPY src/ /app/src/ 
+COPY .env /app/.env
+
 WORKDIR /app
 RUN git init && \
     git remote add origin https://github.com/SDSU-CompE-561-Spring-2025/sport-arena-event-booking.git 
