@@ -31,7 +31,7 @@ export default function SignupPage() {
     }
 
     const payload = {
-      user_role: 1,
+      user_role: data.user_role,
       username: data.username,
       first_name: data.first_name,
       last_name: data.last_name,
@@ -97,6 +97,16 @@ export default function SignupPage() {
           <div>
             <Label>Phone Number</Label>
             <Input type="tel" {...register("phone_number", { required: true })} placeholder="Enter phone number" className="mt-1 bg-white" />
+          </div>
+          <div>
+            <Label>Sign up as venue owner?</Label>
+            <select
+              {...register("user_role", { required: true })}
+              className="mt-1 bg-white w-full p-2 border border-gray-300 rounded"
+            >
+              <option value="1">No</option> {/* user_role = 1 */}
+              <option value="0">Yes</option> {/* user_role = 0 */}
+            </select>
           </div>
           <div>
             <Label>Password</Label>
