@@ -26,6 +26,7 @@ class VenueResponse(BaseModel):
     availability: bool
     hourly_rate: float
     deleted: bool
+    image: Optional[str] = None
 
     class Config:
         orm_mode = True

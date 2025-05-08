@@ -38,6 +38,7 @@ export default function LoginPage() {
 
     if (res.ok) {
       localStorage.setItem("token", data.access_token);
+      localStorage.setItem("user_role", data.user_role); 
       // alert(`Please login to confirm booking     ${localStorage.getItem('token')}`);
       router.push("/home-page");
     } else {

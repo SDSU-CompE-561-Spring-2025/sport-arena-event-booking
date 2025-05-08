@@ -12,6 +12,8 @@ from app.services.user import register_user_service, login_user_service, update_
 from app.schemas.token import Token
 from app.core.auth import get_current_user
 from typing import List
+from sqlalchemy.orm import Session
+from app.dependencies import get_db
 
 
 router = APIRouter()
@@ -22,7 +24,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
 
 @router.get("/me", response_model=UserResponse)
 def get_my_profile(current_user: User = Depends(get_current_user)):
-    return get_profile_service(current_user)
+    return current_user
 
 @router.get("/user/{user_id}", response_model=UserResponse)
 def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
