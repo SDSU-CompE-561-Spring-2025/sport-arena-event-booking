@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Star, Users, Search, User } from "lucide-react";
+import { Star, Users, Search, User, Plus } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { components } from "@/types/api";
 
@@ -144,6 +144,11 @@ export default function UserDashboard() {
         </div>
 
         <div className="flex items-center gap-4">
+          <Link href="/create-venue">
+            <button className="bg-white text-[#003049] p-2 rounded-full hover:bg-gray-100 flex items-center">
+              <Plus className="w-5 h-5" />
+            </button>
+          </Link>
           <Link href="/my-booking" className="text-blue-600 hover:underline">
             <button className="bg-white border-[#F77F00] text-[#003049] px-4 py-2 rounded-full font-semibold hover:opacity-90">
               My Bookings

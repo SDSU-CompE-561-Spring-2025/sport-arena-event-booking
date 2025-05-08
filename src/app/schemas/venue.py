@@ -9,7 +9,6 @@ class EmbeddedVenueHours(BaseModel):
 
 class VenueCreate(BaseModel):
     name: str
-    venue_id: int
     location: str
     capacity: int
     event_type: str
@@ -20,7 +19,7 @@ class VenueCreate(BaseModel):
     venue_hours: Optional[List[EmbeddedVenueHours]] = None
 
 class VenueResponse(BaseModel):
-    venue_id: int
+    # venue_id: int
     name: str
     location: str
     event_type: str

@@ -7,7 +7,7 @@ class Venue(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    venue_id = Column(Integer, nullable=False)
+    venue_id = Column(Integer, unique=True, index=True, autoincrement=True, nullable=True)
     location = Column(String, nullable=False)
     capacity = Column(Integer, nullable=False)
     event_type = Column(String, nullable=False)
