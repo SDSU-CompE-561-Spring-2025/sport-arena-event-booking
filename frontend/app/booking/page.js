@@ -38,26 +38,10 @@ export default function BookingPage() {
             fontWeight: 'bold',
             display: 'flex',
             flexDirection: 'column',
+            paddingTop: '5rem'
             }}
         >
-            <div style={{ 
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: '#003049',
-                padding: '1rem 2rem',
-                marginBottom: '2rem',
-                borderRadius: '16px',
-                width: '97%',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                }}
-            >
-                <Image src="/sdsu_logo.jpeg" alt="SDSU Logo" width={60} height={60} />
-                <h2 style={{ color: 'white', marginLeft: '1rem', fontSize: '1.875rem' }}>EventEz</h2>
-            </div>
-
-            <div style={{ maxWidth: '500px', margin: '2rem auto', padding: '2rem', backgroundColor: '#fff', borderRadius: '10px', marginBottom: '2rem' }}>
+            <div style={{ maxWidth: '500px', margin: '0 auto', padding: '2rem', backgroundColor: '#fff', borderRadius: '10px', marginBottom: '2rem' }}>
                 <h1 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#003049', fontWeight: 'bold', fontSize: '1.5rem' }}>Booking Details</h1>
 
                 <label style={labelStyle}>Event Name:</label>

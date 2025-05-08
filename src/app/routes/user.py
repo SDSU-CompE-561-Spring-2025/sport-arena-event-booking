@@ -13,7 +13,6 @@ from app.schemas.token import Token
 from app.core.auth import get_current_user
 from typing import List
 
-
 router = APIRouter()
 
 @router.post("/register", response_model=UserResponse)
