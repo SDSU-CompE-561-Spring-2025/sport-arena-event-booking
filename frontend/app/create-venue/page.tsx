@@ -13,6 +13,7 @@ export default function CreateVenuePage() {
     const [hourlyRate, setHourlyRate] = useState('');
     const [availability, setAvailability] = useState(true);
     const [contactInfo, setContactInfo] = useState('');
+    const [venueId, setVenueId] = useState('');
     const [venueHours, setVenueHours] = useState([{ day: '', open: '', close: '' }]);
     const [images, setImages] = useState<string[]>([]);
 
@@ -35,6 +36,7 @@ export default function CreateVenuePage() {
             location,
             capacity: parseInt(capacity),
             event_type: eventType,
+            venue_id: venueId,
             // image: images,
             availability,
             hourly_rate: parseFloat(hourlyRate),
@@ -62,7 +64,7 @@ export default function CreateVenuePage() {
 
             if (res.ok) {
                 setFeedback({ status: 'success', message: 'Venue created successfully! Redirecting...' });
-                setTimeout(() => router.push("/venues?created=true"), 1500);
+                setTimeout(() => router.push("/home-page"), 1500);
             } else {
                 //setFeedback({ status: 'error', message: result.detail || 'Failed to create venue.' });
                 const errorMsg = Array.isArray(result.detail)
@@ -111,6 +113,9 @@ export default function CreateVenuePage() {
 
                 <label style={labelStyle}>Hourly Rate:</label>
                 <input type="number" style={inputStyle} value={hourlyRate} onChange={(e) => setHourlyRate(e.target.value)} /><br />
+
+                <label style={labelStyle}>venue_id:</label>
+                <input style={inputStyle} value={venueId} onChange={(e) => setVenueId(e.target.value)} /><br />
 
                 <label style={labelStyle}>Contact Info:</label>
                 <textarea style={{ ...inputStyle, height: '80px' }} value={contactInfo} onChange={(e) => setContactInfo(e.target.value)} /><br />

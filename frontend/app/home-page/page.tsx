@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Star, Users, Search, User, Plus } from "lucide-react";
+import { Search, User, Plus } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { components } from "@/types/api";
 
@@ -166,7 +166,8 @@ export default function UserDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredVenues.map((venue) => (
           <div
-            key={venue.venue_id}
+          key={venue.venue_id ?? `fallback-${venue.name}`}
+
             className="bg-white border rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden"
           >
             <img
