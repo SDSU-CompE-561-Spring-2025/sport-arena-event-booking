@@ -35,7 +35,7 @@ export default function SummaryPage() {
       return;
     }
 
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("token");
     if (!token) {
       alert("Please log in to confirm your booking.");
       router.push("/login");
