@@ -14,6 +14,8 @@ from app.core.auth import get_current_user
 from typing import List
 from sqlalchemy.orm import Session
 from app.dependencies import get_db
+import jwt
+from jwt import PyJWTError as JWTError
 
 
 router = APIRouter()
@@ -34,13 +36,27 @@ def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
 def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     return login_user_service(form_data, db)
 
-@router.put("/update/me", response_model=UserResponse)
-def update_my_profile(
-    update_data: UserUpdate,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
-    return update_user_service(current_user.id, update_data, db)
+
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
+    credentials_exception = HTTPException(
+        status_code=401,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+
+    user = db.query(User).filter(User.username == username, User.deleted == False).first()
+    if user is None:
+        raise credentials_exception
+
+    return user
 
 @router.delete("/delete/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):

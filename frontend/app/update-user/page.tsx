@@ -12,7 +12,7 @@ import { toast } from "react-hot-toast";
 const API_BASE_URL = "http://localhost:8000";
 
 const getAuthHeaders = () => {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("token");
   return {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
