@@ -6,17 +6,15 @@ class Venue(Base):
     __tablename__ = "venues"
 
     id = Column(Integer, primary_key=True, index=True)
+    venue_id = Column(Integer, nullable=False, unique=True)
     name = Column(String, nullable=False)
-    venue_id = Column(Integer, nullable=False)
     location = Column(String, nullable=False)
     capacity = Column(Integer, nullable=False)
     event_type = Column(String, nullable=False)
-    image = Column(String, nullable=True)  # default null
+    image = Column(String, nullable=True)
     availability = Column(Boolean, default=True)
     hourly_rate = Column(Float, nullable=False)
-    contact_info = Column(String, nullable=True)  # default null
-    venue_hours = relationship("VenueHours", backref="venue", cascade="all, delete-orphan")
+    contact_info = Column(String, nullable=True)
     deleted = Column(Boolean, default=False)
-
     owners = relationship("VenueOwner", back_populates="venue")
 

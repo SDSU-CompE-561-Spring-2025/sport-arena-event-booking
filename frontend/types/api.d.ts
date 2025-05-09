@@ -409,6 +409,7 @@ export interface components {
             user_id?: number | null;
             /** Venue Id */
             venue_id: number;
+            event_name: string;
             /**
              * Date
              * Format: date
@@ -427,6 +428,7 @@ export interface components {
             user_id: number;
             /** Venue Id */
             venue_id: number;
+            event_name: string;
             /**
              * Date
              * Format: date

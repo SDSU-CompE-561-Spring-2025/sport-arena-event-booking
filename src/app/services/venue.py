@@ -36,8 +36,8 @@ def get_venue_hours_by_venue_id_service(venue_id: int, db: Session) -> List[Venu
 
 def create_venue_service(venue: VenueCreate, db: Session) -> Venue:
     new_venue = Venue(
-        name=venue.name,
         venue_id=venue.venue_id,
+        name=venue.name,
         location=venue.location,
         capacity=venue.capacity,
         event_type=venue.event_type,

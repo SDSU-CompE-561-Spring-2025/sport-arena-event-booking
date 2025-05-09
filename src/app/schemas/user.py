@@ -18,6 +18,7 @@ class UserResponse(BaseModel):
     last_name: str
     email: EmailStr
     phone_number: str
+    user_role: int
     created_at: datetime
     deleted: bool
 

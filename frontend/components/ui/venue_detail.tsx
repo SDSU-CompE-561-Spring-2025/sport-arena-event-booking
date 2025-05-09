@@ -11,7 +11,7 @@ export default function VenueDetail({ venue }: any) {
   const router = useRouter();
 
   return (
-    <div className="p-6 min-h-screen" style={{ backgroundColor: '#EAE2B7' }}>
+    <div className="min-h-screen bg-white-100 p-6">
       <nav className="bg-[#003049] shadow px-6 py-4 mb-6 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sticky top-0 z-10">
         <h1 className="text-xl font-bold text-white">EventEz</h1>
         <div className="w-full sm:w-1/3 flex items-center border border-[#F77F00] rounded px-2">
@@ -41,7 +41,11 @@ export default function VenueDetail({ venue }: any) {
           <hr className="border-t-2 border-[#003049] mb-6 mt-0 w-1/4" />
           <p className="mb-6">{venue.description}</p>
 
-          <Button size="lg" onClick={() => router.push('/booking')}>
+          <Button
+          size="lg"
+          className="bg-[#F77F00] text-[#003049] px-4 py-2 rounded-full font-semibold hover:opacity-90 border border-[#003049]"
+          onClick={() => router.push(`/booking?venue_id=${venue.venue_id}`)}
+          >
             Book Now
           </Button>
     </div>

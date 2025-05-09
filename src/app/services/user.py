@@ -49,7 +49,7 @@ def login_user_service(form_data: OAuth2PasswordRequestForm, db: Session) -> Tok
     db.add(new_session)
     db.commit()
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "user_role": user.user_role}
 
 def get_profile_service(current_user: User) -> User:
     return current_user

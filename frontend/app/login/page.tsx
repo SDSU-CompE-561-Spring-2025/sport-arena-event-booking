@@ -37,7 +37,9 @@ export default function LoginPage() {
     setLoading(false);
 
     if (res.ok) {
-      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("token", data.access_token);
+      localStorage.setItem("user_role", data.user_role); 
+      // alert(`Please login to confirm booking     ${localStorage.getItem('token')}`);
       router.push("/home-page");
     } else {
       const errorDetail = Array.isArray(data.detail)

@@ -1,14 +1,16 @@
 from pydantic import BaseModel
 from datetime import date
+from datetime import datetime
+
 from typing import Optional
 
 
 class BookingCreate(BaseModel):
-   user_id: Optional[int] = None
-   venue_id: int
-   date: date
-   time_slot: str
-   hours: int
+    venue_id: int
+    event_name: Optional[str] = None
+    start_time: datetime
+    end_time: datetime
+    message: Optional[str] = None
 
 
 class BookingUpdate(BaseModel):
@@ -19,14 +21,13 @@ class BookingUpdate(BaseModel):
 
 
 class BookingResponse(BaseModel):
-   id: int
-   user_id: int
-   venue_id: int
-   date: date
-   time_slot: str
-   hours: int
-   status: str
+    id: int
+    user_id: Optional[int]
+    venue_id: int
+    event_name: Optional[str]
+    start_time: datetime
+    end_time: datetime
+    message: Optional[str]
 
-
-   class Config:
-       orm_mode = True
+    class Config:
+        orm_mode = True
