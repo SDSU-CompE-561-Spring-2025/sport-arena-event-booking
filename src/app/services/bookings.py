@@ -22,13 +22,17 @@ def get_user_bookings(db: Session, user_id: int) -> List[Booking]:
 def get_all_bookings(db: Session) -> List[Booking]:
    return db.query(Booking).all()
 
-def delete_booking(db: Session, booking_id: int, user_id: int) -> bool:
-   booking = db.query(Booking).filter(Booking.id == booking_id, Booking.user_id == user_id).first()
-   if booking:
-       db.delete(booking)
-       db.commit()
-       return True
-   return False
+def delete_booking(db: Session, booking_id: int, user_id: int, is_admin: bool = False) -> bool:
+    if is_admin:
+        booking = db.query(Booking).filter(Booking.id == booking_id).first()
+    else:
+        booking = db.query(Booking).filter(Booking.id == booking_id, Booking.user_id == user_id).first()
+
+    if booking:
+        db.delete(booking)
+        db.commit()
+        return True
+    return False
 
 def update_booking(db: Session, booking_id: int, user_id: int, update_data: BookingUpdate) -> Booking:
    booking = db.query(Booking).filter(Booking.id == booking_id, Booking.user_id == user_id).first()

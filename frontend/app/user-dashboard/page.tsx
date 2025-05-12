@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "react-hot-toast";
 import { components } from "@/types/api";
 import {
   Dialog,
@@ -24,14 +25,23 @@ export default function UserProfile() {
   const [venueMap, setVenueMap] = useState<Record<number, string>>({});
   const [bookingToCancel, setBookingToCancel] = useState<Booking | null>(null);
   const [showDialog, setShowDialog] = useState(false);
+  const [authToken, setAuthToken] = useState<string | null>(null); // 🆕 Token state
 
+  // Load token and fetch bookings once component mounts
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    setAuthToken(token);
     fetchBookings();
   }, []);
 
   const fetchBookings = async () => {
     try {
-      const res = await fetch("http://localhost:8000/bookings/");
+      const res = await fetch("http://localhost:8000/bookings/", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
       if (!res.ok) throw new Error("Failed to fetch bookings");
 
       const data: Booking[] = await res.json();
@@ -72,15 +82,24 @@ export default function UserProfile() {
   };
 
   const confirmCancel = async () => {
-    if (!bookingToCancel) return;
+    if (!bookingToCancel || !authToken) {
+      alert("You're not logged in.");
+      return;
+    }
+
     try {
       const res = await fetch(`http://localhost:8000/bookings/${bookingToCancel.id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
       });
 
       if (!res.ok) throw new Error("Failed to cancel booking");
 
       setCurrentBookings(currentBookings.filter((b) => b.id !== bookingToCancel.id));
+      toast.success("Booking cancelled!");
     } catch (err) {
       alert("Failed to cancel booking.");
       console.error(err);

@@ -32,7 +32,9 @@ def delete_booking(
    db: Session = Depends(get_db),
    current_user: User = Depends(get_current_user)
 ):
-   success = booking_service.delete_booking(db, booking_id, current_user.id)
+   is_admin = current_user.user_role == 0  
+   success = booking_service.delete_booking(db, booking_id, current_user.id, is_admin)
+
    if not success:
        raise HTTPException(status_code=404, detail="Booking not found or access denied")
    return {"detail": "Booking deleted successfully"}

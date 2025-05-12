@@ -36,7 +36,7 @@ export default function MyBookingsPage() {
 
     useEffect(() => {
         const fetchBookings = async () => {
-            const token = localStorage.getItem('access_token');
+            const token = localStorage.getItem('token');
             if (!token) {
                 console.error("Token missing");
                 return;
