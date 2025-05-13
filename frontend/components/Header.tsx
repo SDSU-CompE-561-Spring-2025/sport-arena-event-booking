@@ -1,44 +1,111 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 export default function Header() {
+  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<number | null>(null);
+  const [initials, setInitials] = useState<string>("");
+  const [hasMounted, setHasMounted] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
+
+ useEffect(() => {
+  setHasMounted(true);
+  const token = localStorage.getItem('token');
+  const role = localStorage.getItem('user_role');
+  const fname = localStorage.getItem('first_name') || "";
+  const lname = localStorage.getItem('last_name') || "";
+
+  setIsLoggedIn(!!token);
+  if (role !== null) setUserRole(parseInt(role));
+
+  const firstInitial = fname.charAt(0).toUpperCase();
+  const lastInitial = lname.charAt(0).toUpperCase();
+  setInitials(`${firstInitial}${lastInitial}`);
+}, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('first_name');
+    localStorage.removeItem('last_name');
     setIsLoggedIn(false);
-    window.location.href = "/login";
+    router.push('/login');
   };
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-blue-950 text-white px-4 py-2 text-sm flex justify-between items-center shadow-md h-14">
       <Link href="/">
-        <h1 className="text-xl font-bold">EventEz</h1>
+        <h1 className="text-xl font-bold text-white">EventEz</h1>
       </Link>
 
-      <div className="space-x-2">
-        {isLoggedIn ? (
+      <div className="flex items-center gap-2">
+        {userRole === 0 && (
           <>
-            <Link href="/user-dashboard">
-              <Button variant="secondary">Dashboard</Button>
+            <Link href="/create-venue">
+              <Button size="sm" className="flex items-center gap-1">
+                + Add Venue
+              </Button>
             </Link>
-            <Button onClick={handleLogout}>Logout</Button>
+            <Link href="/user-dashboard">
+              <Button size="sm" className="flex items-center gap-1">
+                My Venues
+              </Button>
+            </Link>
+            {/* <Link href="/venue-details">
+             <Button size="sm" className="flex items-center gap-1">
+                Venue Details
+              </Button>
+            </Link> */}
           </>
+        )}
+
+        {isLoggedIn ? (
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
+              <Button
+                size="sm"
+                className="bg-white text-blue-950 w-8 h-8 p-0 rounded-full hover:bg-gray-100 flex items-center justify-center font-bold text-sm"
+              >
+                {hasMounted ? (initials || "U") : "U"}
+              </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content
+              sideOffset={8}
+              className="bg-white border border-gray-200 rounded-lg shadow-lg p-2 space-y-1 z-50"
+            >
+              <DropdownMenu.Item
+                onSelect={() => router.push('/view-profile')}
+                className="cursor-pointer px-3 py-2 hover:bg-gray-100 rounded-md font-medium text-blue-950"
+              >
+                View Profile
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                onSelect={() => router.push('/update-user?edit=true')}
+                className="cursor-pointer px-3 py-2 hover:bg-gray-100 rounded-md text-blue-950"
+              >
+                Update Profile
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                onSelect={handleLogout}
+                className="cursor-pointer px-3 py-2 text-red-600 hover:bg-red-50 rounded-md"
+              >
+                Logout
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
         ) : (
           <>
             <Link href="/login">
-              <Button variant="secondary">Login</Button>
+              <Button size="sm" variant="secondary" className="text-white">Login</Button>
             </Link>
             <Link href="/signup">
-              <Button>Signup</Button>
+              <Button size="sm" className="text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">Signup</Button>
             </Link>
           </>
         )}

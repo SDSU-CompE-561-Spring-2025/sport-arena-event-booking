@@ -8,7 +8,6 @@ import { components } from "@/types/api";
 type Venue = components["schemas"]["VenueResponse"];
 type VenueWithImage = Venue & { image?: string };
 
-
 export default function UserDashboard() {
   const router = useRouter();
   const [venues, setVenues] = useState<VenueWithImage[]>([]);
