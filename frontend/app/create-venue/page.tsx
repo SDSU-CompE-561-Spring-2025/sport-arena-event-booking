@@ -21,57 +21,48 @@ export default function CreateVenuePage() {
   const [contactInfo, setContactInfo] = useState('');
   const [venueId, setVenueId] = useState('');
   const [venueHours, setVenueHours] = useState([{ day: '', open: '', close: '' }]);
-  const [images, setImages] = useState<string[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    const urls = files.map(file => URL.createObjectURL(file));
-    setImages([...images, ...urls]);
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
   };
 
   const handleCreateVenue = async () => {
-    const payload = {
-      name,
-      location,
-      capacity: parseInt(capacity),
-      event_type: eventType,
-      venue_id: venueId,
-      availability,
-      hourly_rate: parseFloat(hourlyRate),
-      contact_info: contactInfo,
-      venue_hours: venueHours.map(h => ({
-        day: h.day,
-        open_time: h.open,
-        close_time: h.close,
-      })),
-    };
+    const formData = new FormData();
 
-    setLoading(true);
+    formData.append("name", name);
+    formData.append("location", location);
+    formData.append("capacity", capacity);
+    formData.append("event_type", eventType);
+    formData.append("venue_id", venueId);
+    formData.append("availability", availability.toString());
+    formData.append("hourly_rate", hourlyRate);
+    formData.append("contact_info", contactInfo);
+
+    if (selectedFile) {
+      formData.append("image", selectedFile);
+    }
 
     try {
       const res = await fetch("http://localhost:8000/venue/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: formData,
       });
 
       const result = await res.json();
-      setLoading(false);
 
       if (res.ok) {
-        toast.success("Venue created successfully! Redirecting...");
-        setTimeout(() => router.push("/home-page"), 1500);
+        toast.success("Venue created successfully!");
+        router.push("/home-page");
       } else {
-        const errorMsg = Array.isArray(result.detail)
-          ? result.detail.map((err: any) => `${err.loc.join('.')}: ${err.msg}`).join('\n')
-          : result.detail || 'Failed to create venue.';
-        toast.error(errorMsg);
+        toast.error(result.detail || "Failed to create venue.");
       }
     } catch (err) {
-      console.error(err);
-      setLoading(false);
-      toast.error("Server error. Please try again.");
+      toast.error("Server error.");
     }
   };
 
@@ -141,13 +132,11 @@ export default function CreateVenuePage() {
               ))}
             </div>
             <div>
-              <Label>Upload Images</Label>
-              <Input type="file" multiple onChange={handleImageChange} />
-              <div className="flex flex-wrap gap-2 mt-2">
-                {images.map((src, idx) => (
-                  <img key={idx} src={src} alt={`upload-${idx}`} className="w-20 h-20 object-cover rounded" />
-                ))}
-              </div>
+              <Label>Upload Image</Label>
+              <Input type="file" onChange={handleImageChange} />
+              {selectedFile && (
+                <img src={URL.createObjectURL(selectedFile)} alt="preview" className="w-20 h-20 object-cover rounded mt-2" />
+              )}
             </div>
             <Button onClick={handleCreateVenue} disabled={loading} className="mt-4">
               {loading ? 'Creating...' : 'Create Venue'}
