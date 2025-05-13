@@ -1,28 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white-100 p-6">
-      {/* Header */}
-      <header className="bg-blue-950 text-white p-4 flex justify-between items-center rounded-md">
-        <h1 className="text-xl font-bold">EventEz</h1>
-        <div className="space-x-2">
-          <Link href="/login">
-            <Button variant="secondary">LOGIN</Button>
-          </Link>
-          <Link href="/signup">
-            <Button>SIGNUP</Button>
-          </Link>
-        </div>
-      </header>
-
-      {/* Centered Image */}
-      <section className="mt-10 flex justify-center">
-        <div className="bg-[#F77F00] rounded-lg shadow-lg p-4">
+    <>
+      {/* Hero Section */}
+      <section className="flex justify-center">
+        <div className="rounded-lg">
           <Image
-            src="/arena.png"
+            src="/icon.png"
             alt="Arena Booking"
             width={500}
             height={300}
@@ -30,6 +18,46 @@ export default function Home() {
           />
         </div>
       </section>
-    </main>
+
+      {/* Description */}
+      <section className="text-center max-w-2xl mx-auto mt-12">
+        <h2 className="text-2xl font-bold text-[#003049] mb-4">EventEz</h2>
+        <p className="text-gray-700 text-lg">
+          EventEz is your one-stop platform to find, book, and manage venues for sports, concerts, events, and more.
+          Whether you're hosting a local tournament or a live gig, we make booking fast and hassle-free.
+        </p>
+      </section>
+
+      {/* Featured Venues */}
+      <section className="max-w-5xl mx-auto mt-12">
+        <h2 className="text-xl font-semibold mb-4 text-[#003049]">Featured Venues</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { name: "City Sports Arena", image: "/venue-4.jpg" },
+            { name: "Sunset Stadium", image: "/venue-2.jpg" },
+            { name: "Downtown Hall", image: "/venue-3.jpg" },
+          ].map((venue, idx) => (
+            <Card key={idx}>
+              <CardHeader>
+                <Image
+                  src={venue.image}
+                  alt={venue.name}
+                  width={400}
+                  height={250}
+                  className="rounded-md"
+                  unoptimized
+                />
+                <CardTitle className="mt-2 text-center">{venue.name}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex justify-center">
+                <Link href="/login">
+                  <Button>Book Now</Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
