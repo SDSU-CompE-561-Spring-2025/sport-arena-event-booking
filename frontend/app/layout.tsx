@@ -14,6 +14,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/icon.png" type="image/png" sizes="32x32" />
+      </head>
       <body className="bg-white text-gray-900">
         <Header />
         <main className="max-w-6xl mx-auto px-4 py-10">
@@ -25,3 +28,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+

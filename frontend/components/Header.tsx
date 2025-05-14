@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { User } from "lucide-react";
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 export default function Header() {
@@ -14,47 +13,42 @@ export default function Header() {
   const [initials, setInitials] = useState<string>("");
   const [hasMounted, setHasMounted] = useState(false);
 
+  useEffect(() => {
+    setHasMounted(true);
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('user_role');
+    const fname = localStorage.getItem('first_name') || "";
+    const lname = localStorage.getItem('last_name') || "";
 
- useEffect(() => {
-  setHasMounted(true);
-  const token = localStorage.getItem('token');
-  const role = localStorage.getItem('user_role');
-  const fname = localStorage.getItem('first_name') || "";
-  const lname = localStorage.getItem('last_name') || "";
+    setIsLoggedIn(!!token);
+    if (role !== null) setUserRole(parseInt(role));
+  }, []);
 
-  setIsLoggedIn(!!token);
-  if (role !== null) setUserRole(parseInt(role));
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("user_role");
 
-  // const firstInitial = fname.charAt(0).toUpperCase();
-  // const lastInitial = lname.charAt(0).toUpperCase();
-  // setInitials(`${firstInitial}${lastInitial}`);
-}, []);
+    setIsLoggedIn(!!token);
+    if (role !== null) setUserRole(parseInt(role));
 
-useEffect(() => {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("user_role");
+    const fetchInitials = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const user = await res.json();
+        const firstInitial = user.first_name?.charAt(0).toUpperCase() || "U";
+        const lastInitial = user.last_name?.charAt(0).toUpperCase() || "U";
+        setInitials(`${firstInitial}${lastInitial}`);
+      } catch (err) {
+        setInitials("U");
+      }
+    };
 
-  setIsLoggedIn(!!token);
-  if (role !== null) setUserRole(parseInt(role));
-
-  const fetchInitials = async () => {
-    try {
-      const res = await fetch("http://localhost:8000/user/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user = await res.json();
-      const firstInitial = user.first_name?.charAt(0).toUpperCase() || "U";
-      const lastInitial = user.last_name?.charAt(0).toUpperCase() || "U";
-      setInitials(`${firstInitial}${lastInitial}`);
-    } catch (err) {
-      setInitials("U");
-    }
-  };
-
-  if (token) fetchInitials();
-}, []);
+    if (token) fetchInitials();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -72,26 +66,27 @@ useEffect(() => {
       </Link>
 
       <div className="flex items-center gap-2">
+        {/* Admin-only: + Add Venue */}
         {userRole === 0 && (
-          <>
-            <Link href="/create-venue">
-              <Button size="sm" className="flex items-center gap-1 text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">
-                + Add Venue
-              </Button>
-            </Link>
+          <Link href="/create-venue">
+            <Button
+              size="sm"
+              className="flex items-center gap-1 text-white bg-transparent border border-white hover:bg-white hover:text-blue-950"
+            >
+              + Add Venue
+            </Button>
+          </Link>
+        )}
 
-            <Link href="/user-dashboard">
-              <Button size="sm" className="flex items-center gap-1 text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">
-                My Bookings
-              </Button>
-            </Link>
-
-            {/* <Link href="/venue-details">
-             <Button size="sm" className="flex items-center gap-1">
-                Venue Details
-              </Button>
-            </Link> */}
-          </>
+        {userRole !== null && (
+          <Link href="/user-dashboard">
+            <Button
+              size="sm"
+              className="flex items-center gap-1 text-white bg-transparent border border-white hover:bg-white hover:text-blue-950"
+            >
+              My Bookings
+            </Button>
+          </Link>
         )}
 
         {isLoggedIn ? (
@@ -131,11 +126,14 @@ useEffect(() => {
         ) : (
           <>
             <Link href="/login">
-              {/* <Button size="sm" variant="secondary" className="text-white">Login</Button> */}
-              <Button size="sm" className="text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">Login</Button>
+              <Button size="sm" className="text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">
+                Login
+              </Button>
             </Link>
             <Link href="/signup">
-              <Button size="sm" className="text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">Signup</Button>
+              <Button size="sm" className="text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">
+                Signup
+              </Button>
             </Link>
           </>
         )}
