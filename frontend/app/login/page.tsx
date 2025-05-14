@@ -42,8 +42,8 @@ export default function LoginPage() {
       localStorage.setItem("first_name", data.first_name);
       localStorage.setItem("last_name", data.last_name);
 
-      // alert(`Please login to confirm booking     ${localStorage.getItem('token')}`);
-      router.push("/home-page");
+      window.location.href = "/home-page";
+      
     } else {
       const errorDetail = Array.isArray(data.detail)
         ? data.detail.map((e: any) => e.msg).join(", ")

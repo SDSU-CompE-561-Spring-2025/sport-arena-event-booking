@@ -35,7 +35,7 @@ export default function Header() {
     localStorage.removeItem('first_name');
     localStorage.removeItem('last_name');
     setIsLoggedIn(false);
-    router.push('/login');
+    window.location.href = "/login";
   };
 
   return (
@@ -48,15 +48,17 @@ export default function Header() {
         {userRole === 0 && (
           <>
             <Link href="/create-venue">
-              <Button size="sm" className="flex items-center gap-1">
+              <Button size="sm" className="flex items-center gap-1 text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">
                 + Add Venue
               </Button>
             </Link>
+
             <Link href="/user-dashboard">
-              <Button size="sm" className="flex items-center gap-1">
+              <Button size="sm" className="flex items-center gap-1 text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">
                 My Venues
               </Button>
             </Link>
+
             {/* <Link href="/venue-details">
              <Button size="sm" className="flex items-center gap-1">
                 Venue Details
@@ -102,7 +104,8 @@ export default function Header() {
         ) : (
           <>
             <Link href="/login">
-              <Button size="sm" variant="secondary" className="text-white">Login</Button>
+              {/* <Button size="sm" variant="secondary" className="text-white">Login</Button> */}
+              <Button size="sm" className="text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">Login</Button>
             </Link>
             <Link href="/signup">
               <Button size="sm" className="text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">Signup</Button>

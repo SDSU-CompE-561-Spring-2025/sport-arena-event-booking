@@ -26,6 +26,8 @@ app.include_router(bookings_router, prefix="/bookings", tags=["bookings"])
 
 UPLOADS_PATH = os.path.join(os.path.dirname(__file__), "uploads")
 os.makedirs("uploads", exist_ok=True)
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+uploads_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "uploads"))
+app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
 
 Base.metadata.create_all(bind=engine)

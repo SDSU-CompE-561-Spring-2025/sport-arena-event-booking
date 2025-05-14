@@ -649,6 +649,8 @@ export interface components {
             availability: boolean;
             /** Hourly Rate */
             hourly_rate: number;
+            /** image */
+            image: str
             /** Deleted */
             deleted: boolean;
         };
