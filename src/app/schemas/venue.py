@@ -24,6 +24,7 @@ class VenueResponse(BaseModel):
     name: str
     location: str
     event_type: str
+    capacity: int
     availability: bool
     hourly_rate: float
     deleted: bool

@@ -25,9 +25,35 @@ export default function Header() {
   setIsLoggedIn(!!token);
   if (role !== null) setUserRole(parseInt(role));
 
-  const firstInitial = fname.charAt(0).toUpperCase();
-  const lastInitial = lname.charAt(0).toUpperCase();
-  setInitials(`${firstInitial}${lastInitial}`);
+  // const firstInitial = fname.charAt(0).toUpperCase();
+  // const lastInitial = lname.charAt(0).toUpperCase();
+  // setInitials(`${firstInitial}${lastInitial}`);
+}, []);
+
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("user_role");
+
+  setIsLoggedIn(!!token);
+  if (role !== null) setUserRole(parseInt(role));
+
+  const fetchInitials = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/user/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const user = await res.json();
+      const firstInitial = user.first_name?.charAt(0).toUpperCase() || "U";
+      const lastInitial = user.last_name?.charAt(0).toUpperCase() || "U";
+      setInitials(`${firstInitial}${lastInitial}`);
+    } catch (err) {
+      setInitials("U");
+    }
+  };
+
+  if (token) fetchInitials();
 }, []);
 
   const handleLogout = () => {
@@ -56,7 +82,7 @@ export default function Header() {
 
             <Link href="/user-dashboard">
               <Button size="sm" className="flex items-center gap-1 text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">
-                My Bookings
+                My Venues
               </Button>
             </Link>
 
@@ -71,9 +97,12 @@ export default function Header() {
         {isLoggedIn ? (
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
-              <button className="w-8 h-8 rounded-full bg-white hover:bg-gray-100 flex items-center justify-center border transition">
-                <User className="w-5 h-5 text-blue-950" />
-              </button>
+              <Button
+                size="sm"
+                className="bg-white text-blue-950 w-8 h-8 p-0 rounded-full hover:bg-gray-100 flex items-center justify-center font-bold text-sm"
+              >
+                {hasMounted && initials ? initials : "U"}
+              </Button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content
               sideOffset={8}

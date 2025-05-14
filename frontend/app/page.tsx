@@ -26,6 +26,17 @@ export default function Home() {
           EventEz is your one-stop platform to find, book, and manage venues for sports, concerts, events, and more.
           Whether you're hosting a local tournament or a live gig, we make booking fast and hassle-free.
         </p>
+
+        <div className="mt-6 flex justify-center">
+          <Link href="/home-page">
+            {/* <Button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Go to Dashboard
+            </Button> */}
+            <Button size="lg">
+              View Available Venues
+            </Button>
+          </Link>
+        </div>
       </section>
 
       {/* Featured Venues */}

@@ -128,6 +128,7 @@ export default function UserDashboard() {
               <h2 className="text-xl font-bold mb-2">{venue.name}</h2>
               <p className="text-sm text-gray-600 mb-1">{venue.location}</p>
               <p className="text-sm text-gray-500 mb-2">Type: {venue.event_type}</p>
+              <p className="text-sm text-gray-500 mb-2">Capacity: {venue.capacity}</p>
               <p className="text-sm text-gray-500 mb-2">Rate: ${venue.hourly_rate}/hr</p>
               <div className="flex justify-between">
                 <Link href={`/venues/${venue.venue_id}`}>

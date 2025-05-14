@@ -33,6 +33,7 @@ export default async function VenuePage({ params }: { params: { slug: string } }
             <div className="space-y-2 text-gray-700">
               <p><strong>Location:</strong> {venue.location}</p>
               <p><strong>Type:</strong> {venue.event_type}</p>
+              <p><strong>Capacity:</strong> {venue.capacity}</p>
               <p><strong>Hourly Rate:</strong> ${venue.hourly_rate}</p>
             </div>
             <div className="mt-6">
