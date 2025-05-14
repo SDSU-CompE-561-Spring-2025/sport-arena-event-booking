@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { User } from "lucide-react";
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 export default function Header() {
@@ -55,7 +56,7 @@ export default function Header() {
 
             <Link href="/user-dashboard">
               <Button size="sm" className="flex items-center gap-1 text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">
-                My Venues
+                My Bookings
               </Button>
             </Link>
 
@@ -70,12 +71,9 @@ export default function Header() {
         {isLoggedIn ? (
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
-              <Button
-                size="sm"
-                className="bg-white text-blue-950 w-8 h-8 p-0 rounded-full hover:bg-gray-100 flex items-center justify-center font-bold text-sm"
-              >
-                {hasMounted ? (initials || "U") : "U"}
-              </Button>
+              <button className="w-8 h-8 rounded-full bg-white hover:bg-gray-100 flex items-center justify-center border transition">
+                <User className="w-5 h-5 text-blue-950" />
+              </button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content
               sideOffset={8}

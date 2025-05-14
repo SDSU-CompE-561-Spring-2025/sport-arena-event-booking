@@ -1,53 +1,60 @@
 'use client';
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function BookingSummaryPage() {
-  const [booking, setBooking] = useState<any>(null);
+export default function BookingFormPage() {
+  const searchParams = useSearchParams();
+  const venueId = searchParams.get("venue_id");
+  const router = useRouter();
 
-  useEffect(() => {
-    // Fake fetch or replace with actual fetch logic
-    const stored = localStorage.getItem("latestBooking");
-    if (stored) {
-      setBooking(JSON.parse(stored));
+  const [eventName, setEventName] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [hours, setHours] = useState(1);
+  const [message, setMessage] = useState("");
+
+  const handleContinue = () => {
+    if (!venueId || !eventName || !date || !time) {
+      alert("Please fill all required fields");
+      return;
     }
-  }, []);
+
+    const bookingDetails = {
+      venueId,
+      eventName,
+      date,
+      time,
+      hours,
+      message,
+    };
+
+    localStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
+    router.push("/summary");
+  };
 
   return (
-    <div className="flex justify-center">
-      <Card className="w-full max-w-xl mt-10 shadow-md">
-        <CardHeader>
-          <CardTitle className="text-center text-[#003049] text-2xl">Booking Summary</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {booking ? (
-            <div className="space-y-4">
-              <p><strong>Venue:</strong> {booking.venueName}</p>
-              <p><strong>Date:</strong> {booking.date}</p>
-              <p><strong>Time:</strong> {booking.time}</p>
-              {booking.message && <p><strong>Message:</strong> {booking.message}</p>}
+    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded mt-10">
+      <h2 className="text-xl font-bold mb-4">Create Booking</h2>
 
-              <div className="text-green-600 font-semibold">
-                ✅ Your booking has been confirmed!
-              </div>
+      <label className="block mb-2">Event Name</label>
+      <input className="border p-2 w-full mb-4" value={eventName} onChange={(e) => setEventName(e.target.value)} />
 
-              <div className="flex justify-center gap-4 mt-6">
-                <Link href="/user-dashboard">
-                  <Button>Go to Dashboard</Button>
-                </Link>
-                <Link href="/">
-                  <Button variant="outline">Back to Home</Button>
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <p className="text-center text-gray-500">No booking data found.</p>
-          )}
-        </CardContent>
-      </Card>
+      <label className="block mb-2">Date</label>
+      <input type="date" className="border p-2 w-full mb-4" value={date} onChange={(e) => setDate(e.target.value)} />
+
+      <label className="block mb-2">Time</label>
+      <input type="time" className="border p-2 w-full mb-4" value={time} onChange={(e) => setTime(e.target.value)} />
+
+      <label className="block mb-2">Duration (hours)</label>
+      <input type="number" min={1} className="border p-2 w-full mb-4" value={hours} onChange={(e) => setHours(parseInt(e.target.value))} />
+
+      <label className="block mb-2">Message (optional)</label>
+      <textarea className="border p-2 w-full mb-4" value={message} onChange={(e) => setMessage(e.target.value)} />
+
+      <button onClick={handleContinue} className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+        Continue to Summary
+      </button>
     </div>
   );
 }

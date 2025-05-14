@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 type BookingData = {
   venueId: string;
@@ -12,7 +13,7 @@ type BookingData = {
   message?: string;
 };
 
-export default function SummaryPage() {
+export default function BookingSummaryPage() {
   const router = useRouter();
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -31,20 +32,19 @@ export default function SummaryPage() {
 
   const handleConfirmBooking = async () => {
     if (!bookingData) {
-      alert("Booking details missing.");
+      toast.error("Booking details missing.");
       return;
     }
 
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please log in to confirm your booking.");
+      toast.error("Please log in to confirm your booking.");
       router.push("/login");
       return;
     }
 
     const startTime = new Date(`${bookingData.date}T${bookingData.time}`);
     const endTime = new Date(startTime.getTime() + bookingData.hours * 60 * 60 * 1000);
-   
 
     const payload = {
       venue_id: parseInt(bookingData.venueId),
@@ -57,28 +57,34 @@ export default function SummaryPage() {
     try {
       setLoading(true);
 
-      console.log("Access token used:", token);
-      const response = await fetch("http://localhost:8000/bookings/", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/bookings/`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(`Error ${response.status}: ${JSON.stringify(errorData)}`);
+        throw new Error(errorData.detail || `Error ${response.status}`);
       }
 
-      const data = await response.json();
-      router.push("/confirmation");
+      localStorage.setItem("latestBooking", JSON.stringify(bookingData));
+      toast.success("✅ Booking confirmed! Redirecting to homepage...");
+
+      setTimeout(() => router.push("/home-page"), 2500);
     } catch (error: any) {
-      alert(error.message || "Booking failed.");
+      toast.error(error.message || "Booking failed.");
     } finally {
       setLoading(false);
     }
   };
 
-  if (!bookingData) return <p className="p-4 text-center">Loading booking summary...</p>;
+  if (!bookingData) {
+    return <p className="p-4 text-center">Loading booking summary...</p>;
+  }
 
   return (
     <div className="max-w-xl mx-auto bg-white shadow rounded p-6 mt-10">
