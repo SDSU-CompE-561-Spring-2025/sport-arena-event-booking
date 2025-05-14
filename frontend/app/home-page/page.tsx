@@ -55,13 +55,23 @@ export default function UserDashboard() {
     router.push("/login");
   };
 
-  const filteredVenues = venues.filter((venue) => {
-    return (
-      (!filters.location || venue.location.toLowerCase().includes(filters.location.toLowerCase())) &&
-      (!filters.eventType || venue.event_type.toLowerCase() === filters.eventType.toLowerCase()) &&
-      (!filters.rating || venue.hourly_rate >= parseFloat(filters.rating))
-    );
-  });
+const filteredVenues = venues.filter((venue) => {
+  const locationFilter = typeof filters.location === "string"
+    ? venue.location.toLowerCase().includes(filters.location.toLowerCase())
+    : true;
+
+  const eventTypeFilter = !filters.eventType ||
+    venue.event_type.toLowerCase() === filters.eventType.toLowerCase();
+
+  const ratingFilter = !filters.rating ||
+    (!isNaN(Number(filters.rating)) && venue.hourly_rate >= Number(filters.rating));
+
+  const capacityFilter = !filters.capacity ||
+    (!isNaN(Number(filters.capacity)) && venue.capacity >= Number(filters.capacity));
+
+  return locationFilter && eventTypeFilter && ratingFilter && capacityFilter;
+});
+
 
   return (
     <div className="min-h-screen bg-white p-6 pt-24">
@@ -82,7 +92,11 @@ export default function UserDashboard() {
           placeholder="Location"
           className="border border-[#003049] text-[#003049] p-2 rounded"
           value={filters.location}
-          onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+          // onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+          onChange={(e) => {
+            const input = e.target.value.replace(/[0-9]/g, "");
+            setFilters({ ...filters, location: input });
+          }}
         />
         <input
           type="number"
@@ -99,6 +113,7 @@ export default function UserDashboard() {
           <option value="">All Event Types</option>
           <option value="Concert">Concert</option>
           <option value="Wedding">Wedding</option>
+          <option value="Sports">Sports</option>
           <option value="Workshop">Workshop</option>
           <option value="Conference">Conference</option>
           <option value="Festival">Festival</option>

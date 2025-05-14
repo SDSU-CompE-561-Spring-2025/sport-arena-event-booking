@@ -29,12 +29,7 @@ export default function Home() {
 
         <div className="mt-6 flex justify-center">
           <Link href="/home-page">
-            {/* <Button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-              Go to Dashboard
-            </Button> */}
-            <Button size="lg">
-              View Available Venues
-            </Button>
+            <Button size="lg">View Available Venues</Button>
           </Link>
         </div>
       </section>
@@ -44,11 +39,11 @@ export default function Home() {
         <h2 className="text-xl font-semibold mb-4 text-[#003049]">Featured Venues</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { name: "City Sports Arena", image: "/venue-4.jpg" },
-            { name: "Sunset Stadium", image: "/venue-2.jpg" },
-            { name: "Downtown Hall", image: "/venue-3.jpg" },
-          ].map((venue, idx) => (
-            <Card key={idx}>
+            { id: 250, name: "City Sports Arena", image: "/venue-4.jpg" },
+            { id: 251, name: "Sunset Stadium", image: "/venue-2.jpg" },
+            { id: 254, name: "Downtown Hall", image: "/venue-3.jpg" },
+          ].map((venue) => (
+            <Card key={venue.id}>
               <CardHeader>
                 <Image
                   src={venue.image}
@@ -61,7 +56,7 @@ export default function Home() {
                 <CardTitle className="mt-2 text-center">{venue.name}</CardTitle>
               </CardHeader>
               <CardContent className="flex justify-center">
-                <Link href="/login">
+                <Link href={`/venues/${venue.id}`}>
                   <Button>Book Now</Button>
                 </Link>
               </CardContent>

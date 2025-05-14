@@ -72,9 +72,9 @@ export default function BookingSummaryPage() {
       }
 
       localStorage.setItem("latestBooking", JSON.stringify(bookingData));
-      toast.success("✅ Booking confirmed! Redirecting to homepage...");
+      toast.success("✅ Booking confirmed! Redirecting to user-dashboard...");
 
-      setTimeout(() => router.push("/home-page"), 2500);
+      setTimeout(() => router.push("/user-dashboard"), 2500);
     } catch (error: any) {
       toast.error(error.message || "Booking failed.");
     } finally {
@@ -83,25 +83,34 @@ export default function BookingSummaryPage() {
   };
 
   if (!bookingData) {
-    return <p className="p-4 text-center">Loading booking summary...</p>;
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center">
+        <p className="p-4 text-center">Loading booking summary...</p>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-xl mx-auto bg-white shadow rounded p-6 mt-10">
-      <h2 className="text-xl font-bold text-center mb-4">Booking Summary</h2>
-      <p><strong>Event:</strong> {bookingData.eventName}</p>
-      <p><strong>Date:</strong> {bookingData.date}</p>
-      <p><strong>Time:</strong> {bookingData.time}</p>
-      <p><strong>Hours:</strong> {bookingData.hours}</p>
-      <p><strong>Message:</strong> {bookingData.message || "—"}</p>
+    <div className="flex flex-col min-h-screen">
+      <main className="flex-grow flex items-center justify-center">
+        <div className="max-w-xl w-full bg-white shadow rounded p-6">
+          <h2 className="text-xl font-bold text-center mb-4">Booking Summary</h2>
+          <p><strong>Event:</strong> {bookingData.eventName}</p>
+          <p><strong>Date:</strong> {bookingData.date}</p>
+          <p><strong>Time:</strong> {bookingData.time}</p>
+          <p><strong>Hours:</strong> {bookingData.hours}</p>
+          <p><strong>Message:</strong> {bookingData.message || "—"}</p>
 
-      <button
-        onClick={handleConfirmBooking}
-        disabled={loading}
-        className="mt-6 w-full bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700 font-semibold"
-      >
-        {loading ? "Booking..." : "Confirm Booking"}
-      </button>
+          <button
+            onClick={handleConfirmBooking}
+            disabled={loading}
+            className="mt-6 w-full bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700 font-semibold"
+          >
+            {loading ? "Booking..." : "Confirm Booking"}
+          </button>
+        </div>
+      </main>
+
     </div>
   );
 }

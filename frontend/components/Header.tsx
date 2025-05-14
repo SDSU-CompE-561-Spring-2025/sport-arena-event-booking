@@ -82,7 +82,7 @@ useEffect(() => {
 
             <Link href="/user-dashboard">
               <Button size="sm" className="flex items-center gap-1 text-white bg-transparent border border-white hover:bg-white hover:text-blue-950">
-                My Venues
+                My Bookings
               </Button>
             </Link>
 
